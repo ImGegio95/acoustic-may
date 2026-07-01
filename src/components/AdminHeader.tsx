@@ -5,7 +5,7 @@ import { Plus } from "lucide-react";
 import styles from "@/app/admin/page.module.css";
 import AdminProductModal from "./AdminProductModal";
 
-export default function AdminHeader({ categories }: { categories: any[] }) {
+export default function AdminHeader({ categories, attributes }: { categories: any[], attributes: any[] }) {
   const [showModal, setShowModal] = useState(false);
 
   return (
@@ -22,7 +22,8 @@ export default function AdminHeader({ categories }: { categories: any[] }) {
 
       {showModal && (
         <AdminProductModal 
-          categories={categories} 
+          categories={categories}
+          attributes={attributes} 
           onClose={() => setShowModal(false)} 
         />
       )}

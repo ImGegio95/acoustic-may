@@ -6,7 +6,7 @@ import { deleteProduct } from "@/lib/db-actions";
 import styles from "@/app/admin/page.module.css";
 import AdminProductModal from "./AdminProductModal";
 
-export default function AdminProductTable({ products, categories }: { products: any[], categories: any[] }) {
+export default function AdminProductTable({ products, categories, attributes }: { products: any[], categories: any[], attributes: any[] }) {
   const [isDeleting, setIsDeleting] = useState<number | null>(null);
   const [editingProduct, setEditingProduct] = useState<any>(null);
 
@@ -85,6 +85,7 @@ export default function AdminProductTable({ products, categories }: { products: 
         <AdminProductModal 
           product={editingProduct}
           categories={categories}
+          attributes={attributes}
           onClose={() => setEditingProduct(null)}
         />
       )}

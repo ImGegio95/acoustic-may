@@ -56,7 +56,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               <span className={styles.dot}></span> 
               Prodotto artigianale — Realizzato su ordinazione
             </div>
-            <p className={styles.pdpDesc}>{product.description}</p>
+            <div className={styles.pdpDesc} dangerouslySetInnerHTML={{ __html: product.description || '' }} />
 
             <PDPActions 
               product={product as any} 

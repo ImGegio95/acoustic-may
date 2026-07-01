@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/db";
-import { products, categories, settings, attributes, attrValues } from "@/db/schema";
+import { products, categories, settings, attributes, attrValues, productVariants, variantAttr } from "@/db/schema";
 import { eq, desc } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
@@ -112,14 +112,78 @@ export async function getProductBySlug(slug: string) {
 
 // ADMIN ACTIONS
 export async function createProduct(data: any) {
-  const res = await db.insert(products).values(data);
+  const { variants, ...productData } = data;
+  const res = await db.insert(products).values(productData);
+  const productId = res[0].insertId;
+
+  if (variants && variants.length > 0) {
+    for (const v of variants) {
+      const { selectedAttrs, tempId, attributes, id: varId, productId: pId, product, ...variantData } = v;
+      const vRes = await db.insert(productVariants).values({
+        ...variantData,
+        productId,
+        slug: `${productData.slug}-${variantData.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${Date.now()}`
+      });
+      const variantId = vRes[0].insertId;
+      
+      let attrsToSave: number[] = [];
+      if (selectedAttrs) {
+        attrsToSave = Object.values(selectedAttrs);
+      } else if (attributes && Array.isArray(attributes)) {
+        attrsToSave = attributes.map((a: any) => a.attributeValueId || (a.attributeValue && a.attributeValue.id));
+      }
+      
+      for (const attrValId of attrsToSave) {
+        if (attrValId) {
+          await db.insert(variantAttr).values({ variantId, attributeValueId: attrValId });
+        }
+      }
+    }
+  }
+
   revalidatePath("/admin");
   revalidatePath("/catalogo");
   return res;
 }
 
 export async function updateProduct(id: number, data: any) {
-  const res = await db.update(products).set(data).where(eq(products.id, id));
+  const { variants, ...productData } = data;
+  const res = await db.update(products).set(productData).where(eq(products.id, id));
+
+  if (variants !== undefined) {
+    const existingVariants = await db.query.productVariants.findMany({
+      where: eq(productVariants.productId, id)
+    });
+    
+    for (const ev of existingVariants) {
+      await db.delete(variantAttr).where(eq(variantAttr.variantId, ev.id));
+    }
+    await db.delete(productVariants).where(eq(productVariants.productId, id));
+
+    for (const v of variants) {
+      const { tempId, attributes, selectedAttrs, id: varId, productId, product, ...variantData } = v;
+      const vRes = await db.insert(productVariants).values({
+        ...variantData,
+        productId: id,
+        slug: `${productData.slug}-${variantData.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${Date.now()}`
+      });
+      const variantId = vRes[0].insertId;
+      
+      let attrsToSave: number[] = [];
+      if (selectedAttrs) {
+        attrsToSave = Object.values(selectedAttrs);
+      } else if (attributes && Array.isArray(attributes)) {
+        attrsToSave = attributes.map((a: any) => a.attributeValueId || (a.attributeValue && a.attributeValue.id));
+      }
+      
+      for (const attrValId of attrsToSave) {
+        if (attrValId) {
+          await db.insert(variantAttr).values({ variantId, attributeValueId: attrValId });
+        }
+      }
+    }
+  }
+
   revalidatePath("/admin");
   revalidatePath("/catalogo");
   return res;

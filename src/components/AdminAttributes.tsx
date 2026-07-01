@@ -100,7 +100,7 @@ export default function AdminAttributes({ attributes }: AdminAttributesProps) {
                 </div>
               ))}
               
-              <form className={styles.valRow} onSubmit={(e) => handleAddValue(attr.id, e)} style={{ borderTop: '1px solid var(--line)', paddingTop: '12px', marginTop: '8px' }}>
+              <form onSubmit={(e) => handleAddValue(attr.id, e)} style={{ display: 'flex', alignItems: 'center', gap: '12px', borderTop: '1px solid var(--line)', paddingTop: '12px', marginTop: '8px' }}>
                 <input 
                   type="text" 
                   placeholder="Nuovo valore..." 

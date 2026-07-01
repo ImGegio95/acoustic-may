@@ -20,7 +20,7 @@ export default async function AdminDashboard() {
       <Header />
       <main className={styles.adminPage}>
         <div className="container">
-          <AdminHeader categories={categories} />
+          <AdminHeader categories={categories} attributes={attributes} />
 
           {/* ... stats ... */}
           <div className={styles.statsGrid}>
@@ -55,7 +55,7 @@ export default async function AdminDashboard() {
               </div>
             </div>
 
-            <AdminProductTable products={products} categories={categories} />
+            <AdminProductTable products={products} categories={categories} attributes={attributes} />
           </section>
 
           <AdminAttributes attributes={attributes} />

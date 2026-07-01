@@ -12,6 +12,10 @@
   --radius: 12px;
 }
 
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 body {
   font-family: var(--font-inter), sans-serif;
   background: var(--paper2);
