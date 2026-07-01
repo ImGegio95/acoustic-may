@@ -4,24 +4,25 @@ import {
   text,
   decimal,
   timestamp,
-  int,
+  serial,
+  bigint,
 } from "drizzle-orm/mysql-core";
 import { relations } from "drizzle-orm";
 
 export const categories = mysqlTable("categories", {
-  id: int("id").primaryKey().autoincrement(),
+  id: serial("id").primaryKey(),
   name: varchar("name", { length: 255 }).notNull(),
   slug: varchar("slug", { length: 255 }).notNull().unique(),
   description: text("description"),
 });
 
 export const products = mysqlTable("products", {
-  id: int("id").primaryKey().autoincrement(),
+  id: serial("id").primaryKey(),
   name: varchar("name", { length: 255 }).notNull(),
   slug: varchar("slug", { length: 255 }).notNull().unique(),
   description: text("description"),
   price: decimal("price", { precision: 10, scale: 2 }).notNull(),
-  categoryId: int("category_id").references(() => categories.id),
+  categoryId: bigint("category_id", { mode: "number", unsigned: true }).references(() => categories.id),
   image: varchar("image", { length: 255 }),
   images: text("images"), // JSON string for gallery
   badge: varchar("badge", { length: 50 }),
@@ -31,7 +32,7 @@ export const products = mysqlTable("products", {
 });
 
 export const settings = mysqlTable("settings", {
-  id: int("id").primaryKey().autoincrement(),
+  id: serial("id").primaryKey(),
   key: varchar("key", { length: 255 }).notNull().unique(),
   value: text("value"),
   updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),

@@ -19,8 +19,8 @@ export default async function middleware(request: NextRequest) {
       const { enabled, allowedIps } = await res.json();
 
       if (enabled) {
-        const clientIp = request.ip || request.headers.get("x-forwarded-for")?.split(",")[0] || "";
-        const isAllowed = allowedIps.includes(clientIp) || clientIp === "127.0.0.1";
+        const clientIp = (request as any).ip || request.headers.get("x-forwarded-for")?.split(",")[0] || "";
+        const isAllowed = allowedIps.includes(clientIp) || clientIp === "127.0.0.1" || clientIp === "::1";
 
         if (!isAllowed) {
           return NextResponse.redirect(new URL("/manutenzione", request.url));

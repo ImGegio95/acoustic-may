@@ -124,6 +124,6 @@ export async function getMaintenanceSettings() {
   const ips = await getSetting("allowed_ips");
   return {
     enabled: mode === "true",
-    allowedIps: ips ? ips.split(",").map(ip => ip.trim()) : [],
+    allowedIps: ips ? ips.split(",").map((ip: string) => ip.trim()) : [],
   };
 }
