@@ -2,6 +2,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
 import styles from "./page.module.css";
+import Link from "next/link";
 import { db } from "@/db";
 import { categories as categoriesTable, products as productsTable } from "@/db/schema";
 import { eq, and, gte, lte } from "drizzle-orm";
@@ -10,7 +11,7 @@ import { Search, ArrowUpDown } from "lucide-react";
 export default async function CatalogPage({
   searchParams,
 }: {
-  searchParams: Promise<{ cat?: string; minPrice?: string; maxPrice?: string }>;
+  searchParams: Promise<{ cat?: string; q?: string; sort?: string }>;
 }) {
   const params = await searchParams;
   const categories = await db.select().from(categoriesTable);
@@ -21,10 +22,30 @@ export default async function CatalogPage({
     },
   });
 
-  let filteredProducts = allProducts;
+  let filteredProducts = [...allProducts];
 
+  // Category Filter
   if (params.cat) {
-    filteredProducts = allProducts.filter(p => p.category?.slug === params.cat);
+    filteredProducts = filteredProducts.filter(p => p.category?.slug === params.cat);
+  }
+
+  // Search Filter
+  if (params.q) {
+    const query = params.q.toLowerCase();
+    filteredProducts = filteredProducts.filter(p => 
+      p.name.toLowerCase().includes(query) || 
+      p.description?.toLowerCase().includes(query) ||
+      p.category?.name.toLowerCase().includes(query)
+    );
+  }
+
+  // Sorting
+  if (params.sort) {
+    if (params.sort === 'price-asc') {
+      filteredProducts.sort((a, b) => Number(a.price) - Number(b.price));
+    } else if (params.sort === 'price-desc') {
+      filteredProducts.sort((a, b) => Number(b.price) - Number(a.price));
+    }
   }
 
   const formattedProducts = filteredProducts.map(p => ({
@@ -42,7 +63,7 @@ export default async function CatalogPage({
       <Header />
       <main className="container">
         <div className={styles.breadcrumb}>
-          <a href="/">Home</a> / Catalogo
+          <Link href="/">Home</Link> / Catalogo
         </div>
         <div className={styles.catHeader}>
           <h1>Catalogo</h1>
@@ -53,42 +74,60 @@ export default async function CatalogPage({
           <aside className={styles.filters}>
             <div className={styles.filterGroup}>
               <h5>Categoria</h5>
+              <Link 
+                href="/catalogo"
+                className={`${styles.fChip} ${!params.cat ? styles.checked : ''}`}
+              >
+                <span className={styles.box}></span> Tutte le categorie
+              </Link>
               {categories.map(cat => (
-                <a 
+                <Link 
                   key={cat.id} 
-                  href={`/catalogo?cat=${cat.slug}`}
+                  href={`/catalogo?cat=${cat.slug}${params.q ? `&q=${params.q}` : ''}`}
                   className={`${styles.fChip} ${params.cat === cat.slug ? styles.checked : ''}`}
                 >
                   <span className={styles.box}></span> {cat.name}
-                </a>
+                </Link>
               ))}
-              {params.cat && (
-                <a href="/catalogo" className={styles.clearFilters}>Rimuovi filtri ×</a>
-              )}
             </div>
           </aside>
 
           <main className={styles.catMain}>
-            <div className={styles.searchBar}>
+            <form action="/catalogo" method="GET" className={styles.searchBar}>
               <Search size={18} className={styles.searchIcon} strokeWidth={1.5} />
-              <input type="text" placeholder="Cerca diffusori..." />
-            </div>
+              <input 
+                type="text" 
+                name="q" 
+                defaultValue={params.q} 
+                placeholder="Cerca diffusori..." 
+              />
+              {params.cat && <input type="hidden" name="cat" value={params.cat} />}
+            </form>
+            
             <div className={styles.catToolbar}>
               <span className={styles.resultsCount}>{formattedProducts.length} prodotti trovati</span>
               <div className={styles.sortWrapper}>
-                <label htmlFor="sort-select"><ArrowUpDown size={14} strokeWidth={1.5} /> Ordina per</label>
-                <select id="sort-select" className={styles.sortSelect}>
-                  <option>In rilievo</option>
-                  <option>Prezzo: crescente</option>
-                  <option>Prezzo: decrescente</option>
-                </select>
+                <label><ArrowUpDown size={14} strokeWidth={1.5} /> Ordina per</label>
+                <div className={styles.sortOptions}>
+                  <Link href={`/catalogo?sort=price-asc${params.cat ? `&cat=${params.cat}` : ''}${params.q ? `&q=${params.q}` : ''}`} className={params.sort === 'price-asc' ? styles.activeSort : ''}>Prezzo cresc.</Link>
+                  <Link href={`/catalogo?sort=price-desc${params.cat ? `&cat=${params.cat}` : ''}${params.q ? `&q=${params.q}` : ''}`} className={params.sort === 'price-desc' ? styles.activeSort : ''}>Prezzo decresc.</Link>
+                </div>
               </div>
             </div>
-            <div className={styles.prodGrid}>
-              {formattedProducts.map(p => (
-                <ProductCard key={p.id} product={p} />
-              ))}
-            </div>
+
+            {formattedProducts.length === 0 ? (
+              <div className={styles.noResults}>
+                <h3>Nessun prodotto trovato</h3>
+                <p>Prova a cambiare i filtri o la ricerca.</p>
+                <Link href="/catalogo" className="btn btn-outline">Resetta tutto</Link>
+              </div>
+            ) : (
+              <div className={styles.prodGrid}>
+                {formattedProducts.map(p => (
+                  <ProductCard key={p.id} product={p} />
+                ))}
+              </div>
+            )}
           </main>
         </div>
       </main>
