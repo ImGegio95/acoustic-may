@@ -21,12 +21,6 @@ export default function AnnouncementBar({ messages }: { messages: { id: number, 
               {m.text}
             </span>
           ))}
-          {/* Duplicate to create a seamless infinite scrolling loop */}
-          {messages.map((m, i) => (
-            <span key={`dup-${m.id}-${i}`} className={styles.message}>
-              {m.text}
-            </span>
-          ))}
         </div>
       </div>
     </div>
