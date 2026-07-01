@@ -1,0 +1,46 @@
+.main {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--paper);
+  padding: 24px;
+  text-align: center;
+}
+
+.content {
+  max-width: 500px;
+}
+
+.logo {
+  font-size: 40px;
+  font-weight: 900;
+  color: var(--ink);
+  margin-bottom: 40px;
+  letter-spacing: -0.05em;
+}
+
+.content h1 {
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 16px;
+  color: var(--ink);
+}
+
+.content p {
+  color: var(--stone-d);
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.line {
+  width: 60px;
+  height: 2px;
+  background: var(--copper);
+  margin: 40px auto;
+}
+
+.small {
+  font-size: 14px !important;
+  color: var(--stone) !important;
+}

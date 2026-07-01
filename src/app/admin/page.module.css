@@ -284,3 +284,39 @@
   justify-content: flex-end;
   gap: 12px;
 }
+
+.settingsGrid {
+  display: grid;
+  gap: 30px;
+  max-width: 800px;
+}
+
+.fieldDesc {
+  font-size: 13px;
+  color: var(--stone);
+  margin-bottom: 8px;
+}
+
+.toggleWrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--paper);
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  margin-top: 10px;
+}
+
+.toggleLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.toggleWrapper input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}

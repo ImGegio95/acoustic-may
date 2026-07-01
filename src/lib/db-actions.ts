@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/db";
-import { products, categories } from "@/db/schema";
+import { products, categories, settings } from "@/db/schema";
 import { eq, desc } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
@@ -95,4 +95,35 @@ export async function deleteCategory(id: number) {
   revalidatePath("/admin");
   revalidatePath("/catalogo");
   return res;
+}
+
+// SETTINGS ACTIONS
+export async function getSetting(key: string) {
+  const res = await db.query.settings.findFirst({
+    where: eq(settings.key, key),
+  });
+  return res?.value;
+}
+
+export async function updateSetting(key: string, value: string) {
+  const existing = await db.query.settings.findFirst({
+    where: eq(settings.key, key),
+  });
+
+  if (existing) {
+    await db.update(settings).set({ value }).where(eq(settings.key, key));
+  } else {
+    await db.insert(settings).values({ key, value });
+  }
+  revalidatePath("/admin");
+  revalidatePath("/", "layout"); // Revalidate everything for maintenance mode
+}
+
+export async function getMaintenanceSettings() {
+  const mode = await getSetting("maintenance_mode");
+  const ips = await getSetting("allowed_ips");
+  return {
+    enabled: mode === "true",
+    allowedIps: ips ? ips.split(",").map(ip => ip.trim()) : [],
+  };
 }
