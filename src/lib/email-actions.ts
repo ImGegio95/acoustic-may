@@ -12,7 +12,7 @@ export async function sendContactEmail(formData: FormData) {
     return { error: "Compila tutti i campi obbligatori." };
   }
 
-  const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD, ADMIN_EMAIL } = process.env;
+  const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD, SMTP_FROM_EMAIL, ADMIN_EMAIL } = process.env;
 
   if (!SMTP_HOST || !SMTP_USER || !SMTP_PASSWORD) {
     return { error: "Errore di configurazione del server email. Contatta l'amministratore (configura il file .env)." };
@@ -28,10 +28,12 @@ export async function sendContactEmail(formData: FormData) {
     },
   });
 
+  const senderEmail = SMTP_FROM_EMAIL || SMTP_USER;
+
   try {
     await transporter.sendMail({
       // L'email deve partire dall'utente autenticato per non finire in spam
-      from: `"${name} (Sito Web)" <${SMTP_USER}>`, 
+      from: `"${name} (Sito Web)" <${senderEmail}>`, 
       // Se clicchi "Rispondi", risponderà all'utente
       replyTo: email,
       // Destinatario: la mail admin, oppure se manca, la mail stessa dell'SMTP
