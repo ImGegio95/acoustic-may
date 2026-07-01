@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { db } from "@/db";
-import { products, productVariants, orders, orderItems } from "@/db/schema";
+import { products, productVariants, orders, orderItems, shippingOptions } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -10,7 +10,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { items, customerEmail, customerName, customerPhone, notes, userId, accountType, taxCode, vatNumber, pec, sdi } = body;
+    const { items, customerEmail, customerName, customerPhone, notes, userId, accountType, taxCode, vatNumber, pec, sdi, billingAddress, shippingAddress, shippingOptionId } = body;
 
     if (!items || items.length === 0) {
       return NextResponse.json({ error: "Il carrello è vuoto" }, { status: 400 });
@@ -76,8 +76,21 @@ export async function POST(req: Request) {
       });
     }
 
-    // Regola di spedizione: Gratis sopra i 100€, altrimenti 9,90€
-    const shippingCost = subtotal > 100 ? 0 : 9.90;
+    let shippingCost = 0;
+    let shippingName = 'Spedizione';
+    if (shippingOptionId) {
+      const dbOpt = await db.query.shippingOptions.findFirst({
+        where: eq(shippingOptions.id, shippingOptionId)
+      });
+      if (dbOpt) {
+        shippingName = dbOpt.name;
+        shippingCost = Number(dbOpt.price);
+        if (dbOpt.minOrderValue && subtotal >= Number(dbOpt.minOrderValue)) {
+          shippingCost = 0;
+        }
+      }
+    }
+
     const finalTotal = subtotal + shippingCost;
 
     // 1. CREIAMO UN ORDINE IN BOZZA (incompleto) SUL DB
@@ -93,6 +106,8 @@ export async function POST(req: Request) {
       vatNumber: vatNumber || null,
       pec: pec || null,
       sdi: sdi || null,
+      billingAddress: billingAddress || null,
+      shippingAddress: shippingAddress || null,
       subtotal: subtotal.toString(),
       shippingCost: shippingCost.toString(),
       total: finalTotal.toString(),
@@ -147,7 +162,7 @@ export async function POST(req: Request) {
               amount: Math.round(shippingCost * 100),
               currency: 'eur',
             },
-            display_name: 'Spedizione Standard',
+            display_name: shippingName,
           },
         },
       ];

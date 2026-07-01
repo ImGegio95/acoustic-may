@@ -135,7 +135,7 @@
   margin-bottom: 20px;
 }
 
-.item {
+.itemRow {
   display: flex;
   justify-content: space-between;
   font-size: 14px;
@@ -153,14 +153,17 @@
   gap: 12px;
 }
 
-.totalRow {
+.totalsRow {
   display: flex;
   justify-content: space-between;
   font-size: 14px;
   color: var(--stone-d);
+  margin-bottom: 12px;
 }
 
-.grandTotal {
+.finalTotal {
+  display: flex;
+  justify-content: space-between;
   color: var(--ink);
   font-weight: 700;
   font-size: 18px;

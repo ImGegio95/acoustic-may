@@ -163,10 +163,20 @@ export const orders = mysqlTable("orders", {
   shippingCost: decimal("shipping_cost", { precision: 10, scale: 2 }).notNull().default('0.00'),
   total: decimal("total", { precision: 10, scale: 2 }).notNull(),
   
+  discountAmount: decimal("discount_amount", { precision: 10, scale: 2 }),
   notes: text("notes"),
   
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
+});
+
+export const shippingOptions = mysqlTable("shipping_options", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  description: text("description"),
+  price: decimal("price", { precision: 10, scale: 2 }).notNull(),
+  isActive: boolean("is_active").default(true),
+  minOrderValue: decimal("min_order_value", { precision: 10, scale: 2 }), // Opzionale per "Spedizione gratuita sopra i X€"
 });
 
 export const orderItems = mysqlTable("order_items", {

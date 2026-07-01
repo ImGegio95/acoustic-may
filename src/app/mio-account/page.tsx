@@ -50,7 +50,7 @@ export default async function AccountPage() {
               <div className={styles.loginCard}>
                 <div className={styles.cardHeader}>
                   <h1>Area Riservata</h1>
-                  <p>Accedi per gestire lo store Acoustic May</p>
+                  <p>Accedi per gestire il tuo profilo e i tuoi ordini</p>
                 </div>
 
                 <LoginForm />
@@ -61,8 +61,8 @@ export default async function AccountPage() {
 
                 <div className={styles.registerPrompt}>
                   <p>Non hai ancora un account?</p>
-                  <Link href="/registrati" className="btn btn-ghost w-full" style={{ display: 'block', textAlign: 'center' }}>
-                    Crea un account artigiano
+                  <Link href="/registrati" className="btn btn-outline w-full" style={{ display: 'block', textAlign: 'center', marginTop: '12px' }}>
+                    Crea un nuovo account
                   </Link>
                 </div>
               </div>

@@ -7,10 +7,11 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Lock, ShieldCheck, CreditCard } from "lucide-react";
 
-export default function CheckoutForm({ dbUser }: { dbUser: any }) {
+export default function CheckoutForm({ dbUser, shippingOptions }: { dbUser: any, shippingOptions?: any[] }) {
   const { items, getTotal } = useCartStore();
   const [mounted, setMounted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [selectedShippingId, setSelectedShippingId] = useState<number | null>(shippingOptions && shippingOptions.length > 0 ? shippingOptions[0].id : null);
   
   const [formData, setFormData] = useState({
     email: dbUser?.email || "",
@@ -19,8 +20,11 @@ export default function CheckoutForm({ dbUser }: { dbUser: any }) {
     taxCode: dbUser?.taxCode || "",
     vatNumber: dbUser?.vatNumber || "",
     pec: dbUser?.pec || "",
-    sdi: dbUser?.sdi || ""
+    sdi: dbUser?.sdi || "",
+    bStreet: "", bNumber: "", bCity: "", bProvince: "", bZip: "", bRegion: "",
+    sStreet: "", sNumber: "", sCity: "", sProvince: "", sZip: "", sRegion: ""
   });
+  const [sameShipping, setSameShipping] = useState(true);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -43,8 +47,18 @@ export default function CheckoutForm({ dbUser }: { dbUser: any }) {
   }
 
   const subtotal = getTotal();
-  const shipping = subtotal > 100 ? 0 : 9.90;
+  const selectedOpt = (shippingOptions || []).find(o => o.id === selectedShippingId);
+  let shipping = 0;
+  if (selectedOpt) {
+    shipping = Number(selectedOpt.price);
+    if (selectedOpt.minOrderValue && subtotal >= Number(selectedOpt.minOrderValue)) {
+      shipping = 0;
+    }
+  } else {
+    shipping = subtotal > 100 ? 0 : 9.90;
+  }
   const total = subtotal + shipping;
+  const iva = total - (total / 1.22);
 
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -61,8 +75,12 @@ export default function CheckoutForm({ dbUser }: { dbUser: any }) {
           accountType: formData.accountType,
           taxCode: formData.taxCode,
           vatNumber: formData.vatNumber,
-          pec: formData.pec,
-          sdi: formData.sdi
+          sdi: formData.sdi,
+          shippingOptionId: selectedShippingId,
+          billingAddress: `${formData.bStreet} ${formData.bNumber}, ${formData.bZip} ${formData.bCity} (${formData.bProvince}), ${formData.bRegion}`,
+          shippingAddress: sameShipping 
+            ? `${formData.bStreet} ${formData.bNumber}, ${formData.bZip} ${formData.bCity} (${formData.bProvince}), ${formData.bRegion}`
+            : `${formData.sStreet} ${formData.sNumber}, ${formData.sZip} ${formData.sCity} (${formData.sProvince}), ${formData.sRegion}`
         })
       });
       const data = await res.json();
@@ -82,16 +100,19 @@ export default function CheckoutForm({ dbUser }: { dbUser: any }) {
   return (
     <div className={styles.checkoutWrapper}>
       <header className={styles.checkoutHeader}>
-        <Link href="/" className={styles.logo}>
-          <Image 
-            src="/logo.webp" 
-            alt="Acoustic May Logo" 
-            width={140} 
-            height={35} 
-          />
-        </Link>
-        <div className={styles.steps}>
-          <span className={styles.active}><Lock size={14} style={{ marginRight: '6px' }}/> Checkout Sicuro</span>
+        <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+          <Link href="/" className={styles.logo}>
+            <Image 
+              src="/logo.webp" 
+              alt="Acoustic May Logo" 
+              width={140} 
+              height={35} 
+              style={{ objectFit: 'contain' }}
+            />
+          </Link>
+          <div className={styles.steps}>
+            <span className={styles.active}><Lock size={14} style={{ marginRight: '6px' }}/> Checkout Sicuro</span>
+          </div>
         </div>
       </header>
 
@@ -149,7 +170,114 @@ export default function CheckoutForm({ dbUser }: { dbUser: any }) {
                     </div>
                   </>
                 )}
+                
+                <div style={{ gridColumn: '1 / -1', marginTop: '16px' }}>
+                  <h4 style={{ marginBottom: '16px', fontSize: '16px' }}>Indirizzo di Fatturazione</h4>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                    <div className={styles.field} style={{ gridColumn: '1 / -1' }}>
+                      <label>Via / Piazza *</label>
+                      <input required type="text" name="bStreet" value={formData.bStreet} onChange={handleChange} />
+                    </div>
+                    <div className={styles.field}>
+                      <label>Civico *</label>
+                      <input required type="text" name="bNumber" value={formData.bNumber} onChange={handleChange} />
+                    </div>
+                    <div className={styles.field}>
+                      <label>CAP *</label>
+                      <input required type="text" name="bZip" value={formData.bZip} onChange={handleChange} />
+                    </div>
+                    <div className={styles.field}>
+                      <label>Città *</label>
+                      <input required type="text" name="bCity" value={formData.bCity} onChange={handleChange} />
+                    </div>
+                    <div className={styles.field}>
+                      <label>Provincia (Sigla) *</label>
+                      <input required type="text" name="bProvince" value={formData.bProvince} onChange={handleChange} maxLength={2} style={{ textTransform: 'uppercase' }} />
+                    </div>
+                    <div className={styles.field} style={{ gridColumn: '1 / -1' }}>
+                      <label>Regione *</label>
+                      <input required type="text" name="bRegion" value={formData.bRegion} onChange={handleChange} />
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{ gridColumn: '1 / -1', marginTop: '16px', marginBottom: '8px' }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '14px', fontWeight: 600 }}>
+                    <input 
+                      type="checkbox" 
+                      checked={sameShipping} 
+                      onChange={(e) => setSameShipping(e.target.checked)} 
+                      style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+                    />
+                    L'indirizzo di spedizione è uguale a quello di fatturazione
+                  </label>
+                </div>
+
+                {!sameShipping && (
+                  <div style={{ gridColumn: '1 / -1', marginTop: '8px' }}>
+                    <h4 style={{ marginBottom: '16px', fontSize: '16px' }}>Indirizzo di Spedizione</h4>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                      <div className={styles.field} style={{ gridColumn: '1 / -1' }}>
+                        <label>Via / Piazza *</label>
+                        <input required type="text" name="sStreet" value={formData.sStreet} onChange={handleChange} />
+                      </div>
+                      <div className={styles.field}>
+                        <label>Civico *</label>
+                        <input required type="text" name="sNumber" value={formData.sNumber} onChange={handleChange} />
+                      </div>
+                      <div className={styles.field}>
+                        <label>CAP *</label>
+                        <input required type="text" name="sZip" value={formData.sZip} onChange={handleChange} />
+                      </div>
+                      <div className={styles.field}>
+                        <label>Città *</label>
+                        <input required type="text" name="sCity" value={formData.sCity} onChange={handleChange} />
+                      </div>
+                      <div className={styles.field}>
+                        <label>Provincia (Sigla) *</label>
+                        <input required type="text" name="sProvince" value={formData.sProvince} onChange={handleChange} maxLength={2} style={{ textTransform: 'uppercase' }} />
+                      </div>
+                      <div className={styles.field} style={{ gridColumn: '1 / -1' }}>
+                        <label>Regione *</label>
+                        <input required type="text" name="sRegion" value={formData.sRegion} onChange={handleChange} />
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
+
+              {shippingOptions && shippingOptions.length > 0 && (
+                <div style={{ background: 'var(--paper2)', padding: '24px', borderRadius: '12px', border: '1px solid var(--line)', marginBottom: '32px' }}>
+                  <h4 style={{ marginBottom: '16px' }}>Metodo di Spedizione</h4>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    {shippingOptions.map((opt) => {
+                      const isFree = opt.minOrderValue && subtotal >= Number(opt.minOrderValue);
+                      const finalPrice = isFree ? 0 : Number(opt.price);
+                      
+                      return (
+                        <label key={opt.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px', border: '1px solid', borderColor: selectedShippingId === opt.id ? 'var(--copper)' : 'var(--line)', borderRadius: '8px', cursor: 'pointer', background: 'var(--paper)' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                            <input 
+                              type="radio" 
+                              name="shippingOpt" 
+                              value={opt.id} 
+                              checked={selectedShippingId === opt.id}
+                              onChange={() => setSelectedShippingId(opt.id)}
+                            />
+                            <div>
+                              <div style={{ fontWeight: 600 }}>{opt.name}</div>
+                              {opt.description && <div style={{ fontSize: '13px', color: 'var(--stone-d)' }}>{opt.description}</div>}
+                            </div>
+                          </div>
+                          <div style={{ fontWeight: 600 }}>
+                            {finalPrice === 0 ? 'Gratis' : `${finalPrice.toFixed(2)} €`}
+                          </div>
+                        </label>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
 
               <div style={{ background: 'var(--paper2)', padding: '24px', borderRadius: '12px', border: '1px solid var(--line)', marginBottom: '32px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
@@ -168,10 +296,10 @@ export default function CheckoutForm({ dbUser }: { dbUser: any }) {
               <button 
                 type="submit" 
                 className="btn btn-dark" 
-                style={{ width: '100%', padding: '16px', fontSize: '18px' }}
+                style={{ width: '100%', padding: '16px', fontSize: '18px', textAlign: 'center', justifyContent: 'center' }}
                 disabled={loading}
               >
-                {loading ? "Generazione Checkout..." : "Procedi al Pagamento Sicuro"}
+                {loading ? "Generazione Checkout..." : "Procedi al Pagamento"}
               </button>
             </form>
           </section>
@@ -182,12 +310,15 @@ export default function CheckoutForm({ dbUser }: { dbUser: any }) {
             <h3>Riepilogo Ordine</h3>
             <div className={styles.itemList}>
               {items.map((item, i) => (
-                <div key={i} className={styles.itemRow}>
-                  <div className={styles.itemInfo}>
-                    <span className={styles.itemName}>{item.name}</span>
-                    <span className={styles.itemQty}>Qtà: {item.quantity}</span>
+                <div key={i} className={styles.itemRow} style={{ alignItems: 'center', gap: '12px' }}>
+                  {item.image && (
+                    <Image src={item.image} width={50} height={50} alt={item.name} style={{ borderRadius: '6px', objectFit: 'cover' }} />
+                  )}
+                  <div className={styles.itemInfo} style={{ flex: 1 }}>
+                    <span className={styles.itemName} style={{ display: 'block', fontSize: '14px', color: 'var(--ink)' }}>{item.name}</span>
+                    <span className={styles.itemQty} style={{ display: 'block', color: 'var(--stone-d)', fontSize: '12px' }}>Qtà: {item.quantity}</span>
                   </div>
-                  <div className={styles.itemPrice}>
+                  <div className={styles.itemPrice} style={{ fontWeight: 600 }}>
                     {Number(item.price * item.quantity).toFixed(2)} €
                   </div>
                 </div>
@@ -204,8 +335,12 @@ export default function CheckoutForm({ dbUser }: { dbUser: any }) {
             </div>
             
             <div className={styles.finalTotal}>
-              <span>Totale</span>
+              <span>Totale (IVA incl.)</span>
               <span>{total.toFixed(2)} €</span>
+            </div>
+            
+            <div className={styles.totalsRow} style={{ marginTop: '12px', justifyContent: 'flex-end', fontSize: '12px' }}>
+              <span>di cui IVA (22%): {iva.toFixed(2)} €</span>
             </div>
           </div>
         </aside>
