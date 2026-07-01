@@ -177,6 +177,7 @@ export const shippingOptions = mysqlTable("shipping_options", {
   price: decimal("price", { precision: 10, scale: 2 }).notNull(),
   isActive: boolean("is_active").default(true),
   minOrderValue: decimal("min_order_value", { precision: 10, scale: 2 }), // Opzionale per "Spedizione gratuita sopra i X€"
+  sortOrder: bigint("sort_order", { mode: "number" }).default(0),
 });
 
 export const orderItems = mysqlTable("order_items", {

@@ -2,7 +2,7 @@ import CheckoutForm from "./CheckoutForm";
 import { auth } from "@/auth";
 import { db } from "@/db";
 import { users, shippingOptions } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, asc } from "drizzle-orm";
 
 export default async function CheckoutPageWrapper() {
   const session = await auth();
@@ -15,7 +15,7 @@ export default async function CheckoutPageWrapper() {
     }
   }
 
-  const activeShippingOptions = await db.select().from(shippingOptions).where(eq(shippingOptions.isActive, true));
+  const activeShippingOptions = await db.select().from(shippingOptions).where(eq(shippingOptions.isActive, true)).orderBy(asc(shippingOptions.sortOrder));
 
   return <CheckoutForm dbUser={dbUser} shippingOptions={activeShippingOptions} />;
 }

@@ -1,13 +1,15 @@
 import { db } from "@/db";
 import { shippingOptions } from "@/db/schema";
+import { asc } from "drizzle-orm";
 import Header from "@/components/Header";
 import AdminNav from "@/components/AdminNav";
 import styles from "../page.module.css";
-import { addShippingOption, deleteShippingOption, toggleShippingOption } from "./actions";
-import { Truck, Trash2, Plus } from "lucide-react";
+import { addShippingOption } from "./actions";
+import { Plus } from "lucide-react";
+import ShippingRow from "./ShippingRow";
 
 export default async function SpedizioniPage() {
-  const options = await db.select().from(shippingOptions);
+  const options = await db.select().from(shippingOptions).orderBy(asc(shippingOptions.sortOrder));
 
   return (
     <>
@@ -75,24 +77,7 @@ export default async function SpedizioniPage() {
                   {options.length === 0 ? (
                     <tr><td colSpan={6} style={{ textAlign: 'center', padding: '24px' }}>Nessun metodo di spedizione creato.</td></tr>
                   ) : options.map((opt) => (
-                    <tr key={opt.id}>
-                      <td style={{ fontWeight: 600 }}><Truck size={14} style={{ display: 'inline', marginRight: '6px' }}/>{opt.name}</td>
-                      <td>{opt.price} €</td>
-                      <td>{opt.minOrderValue ? `${opt.minOrderValue} €` : "-"}</td>
-                      <td style={{ color: 'var(--stone-d)' }}>{opt.description || "-"}</td>
-                      <td>
-                        <form action={async () => { "use server"; await toggleShippingOption(opt.id, opt.isActive || false); }}>
-                          <button type="submit" style={{ padding: '4px 12px', borderRadius: '20px', fontSize: '12px', fontWeight: 600, background: opt.isActive ? '#dcfce7' : '#fee2e2', color: opt.isActive ? '#166534' : '#991b1b', border: 'none', cursor: 'pointer' }}>
-                            {opt.isActive ? "Attivo" : "Disattivato"}
-                          </button>
-                        </form>
-                      </td>
-                      <td style={{ textAlign: 'right' }}>
-                        <form action={async () => { "use server"; await deleteShippingOption(opt.id); }}>
-                          <button type="submit" style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: '#ef4444' }}><Trash2 size={18} /></button>
-                        </form>
-                      </td>
-                    </tr>
+                    <ShippingRow key={opt.id} opt={opt} />
                   ))}
                 </tbody>
               </table>

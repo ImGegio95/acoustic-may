@@ -127,7 +127,7 @@ export default function CheckoutForm({ dbUser, shippingOptions }: { dbUser: any,
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '24px' }}>
                 <div className={styles.field} style={{ gridColumn: '1 / -1' }}>
                   <label>Tipo di Acquisto</label>
-                  <select name="accountType" value={formData.accountType} onChange={handleChange} style={{ padding: '14px', borderRadius: '8px', border: '1px solid var(--line)' }}>
+                  <select name="accountType" value={formData.accountType} onChange={handleChange} style={{ width: '100%', padding: '14px', borderRadius: '8px', border: '1px solid var(--line)', background: 'var(--paper)', fontSize: '15px', color: 'var(--ink)' }}>
                     <option value="private">Privato</option>
                     <option value="company">Azienda / P.IVA</option>
                   </select>
