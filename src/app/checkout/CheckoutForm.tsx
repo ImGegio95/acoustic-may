@@ -102,12 +102,10 @@ export default function CheckoutForm({ dbUser, shippingOptions }: { dbUser: any,
       <header className={styles.checkoutHeader}>
         <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
           <Link href="/" className={styles.logo}>
-            <Image 
+            <img 
               src="/logo.webp" 
               alt="Acoustic May Logo" 
-              width={140} 
-              height={35} 
-              style={{ objectFit: 'contain' }}
+              style={{ width: '140px', height: 'auto', objectFit: 'contain' }}
             />
           </Link>
           <div className={styles.steps}>
@@ -295,9 +293,9 @@ export default function CheckoutForm({ dbUser, shippingOptions }: { dbUser: any,
 
               <button 
                 type="submit" 
-                className="btn btn-dark" 
-                style={{ width: '100%', padding: '16px', fontSize: '18px', textAlign: 'center', justifyContent: 'center' }}
+                className={`btn btn-dark ${styles.submitBtn}`}
                 disabled={loading}
+                style={{ width: '100%', padding: '16px', fontSize: '16px', textAlign: 'center', justifyContent: 'center', display: 'flex' }}
               >
                 {loading ? "Generazione Checkout..." : "Procedi al Pagamento"}
               </button>

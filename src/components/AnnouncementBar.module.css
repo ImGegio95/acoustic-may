@@ -16,6 +16,38 @@
   width: 100%;
   overflow: hidden;
   white-space: nowrap;
+  position: relative;
+  z-index: 1;
+}
+
+.eqBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.25;
+  overflow: hidden;
+}
+
+.eqBar {
+  width: 3px;
+  height: 20px;
+  background-color: var(--paper);
+  border-radius: 2px;
+  animation: eqBounce 0.9s ease-in-out infinite alternate;
+  transform-origin: center;
+}
+
+@keyframes eqBounce {
+  0% { transform: scaleY(0.2); }
+  50% { transform: scaleY(1); }
+  100% { transform: scaleY(0.4); }
 }
 
 .track {

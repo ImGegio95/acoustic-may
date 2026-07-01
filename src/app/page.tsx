@@ -27,15 +27,25 @@ export default async function Home() {
   } catch (e) {}
 
   // Format for the component
-  const formattedProducts = dbProducts.map(p => ({
-    id: p.id,
-    name: p.name,
-    slug: p.slug,
-    category: p.category?.name || "Uncategorized",
-    description: p.description || "",
-    price: `${p.price} €`,
-    badge: p.badge
-  }));
+  const formattedProducts = dbProducts.map(p => {
+    let image = "/placeholder.png";
+    if (p.images) {
+      try {
+        const parsed = JSON.parse(p.images);
+        if (Array.isArray(parsed) && parsed.length > 0) image = parsed[0];
+      } catch(e) {}
+    }
+    return {
+      id: p.id,
+      name: p.name,
+      slug: p.slug,
+      category: p.category?.name || "Uncategorized",
+      description: p.description || "",
+      price: `${p.price} €`,
+      badge: p.badge,
+      image
+    };
+  });
 
   const news = novitaIds.length > 0 
     ? novitaIds.map(id => formattedProducts.find(p => p.id === id)).filter(Boolean) as typeof formattedProducts
