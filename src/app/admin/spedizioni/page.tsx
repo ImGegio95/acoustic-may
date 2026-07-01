@@ -31,7 +31,7 @@ export default async function SpedizioniPage() {
               </div>
             </div>
             
-            <form action={addShippingOption} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '16px', background: 'var(--paper2)', padding: '24px', borderRadius: '12px', border: '1px solid var(--line)', marginBottom: '40px' }}>
+            <form action={addShippingOption} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '16px', background: 'var(--paper2)', padding: '24px', borderRadius: '12px', border: '1px solid var(--line)', marginBottom: '40px' }}>
               <div>
                 <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '8px' }}>Nome Metodo *</label>
                 <input required type="text" name="name" placeholder="Es: Corriere Espresso" style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid var(--line)' }} />
@@ -39,6 +39,10 @@ export default async function SpedizioniPage() {
               <div>
                 <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '8px' }}>Prezzo (€) *</label>
                 <input required type="number" step="0.01" name="price" placeholder="Es: 9.90 (0 per Gratis)" style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid var(--line)' }} />
+              </div>
+              <div>
+                <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '8px' }}>Soglia Gratuita (€)</label>
+                <input type="number" step="0.01" name="minOrderValue" placeholder="Es: 100 (Opzionale)" style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid var(--line)' }} />
               </div>
               <div>
                 <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '8px' }}>Descrizione</label>
@@ -61,6 +65,7 @@ export default async function SpedizioniPage() {
                   <tr>
                     <th>Nome</th>
                     <th>Prezzo</th>
+                    <th>Soglia Gratuita</th>
                     <th>Descrizione</th>
                     <th>Stato</th>
                     <th style={{ textAlign: 'right' }}>Azioni</th>
@@ -68,11 +73,12 @@ export default async function SpedizioniPage() {
                 </thead>
                 <tbody>
                   {options.length === 0 ? (
-                    <tr><td colSpan={5} style={{ textAlign: 'center', padding: '24px' }}>Nessun metodo di spedizione creato.</td></tr>
+                    <tr><td colSpan={6} style={{ textAlign: 'center', padding: '24px' }}>Nessun metodo di spedizione creato.</td></tr>
                   ) : options.map((opt) => (
                     <tr key={opt.id}>
                       <td style={{ fontWeight: 600 }}><Truck size={14} style={{ display: 'inline', marginRight: '6px' }}/>{opt.name}</td>
                       <td>{opt.price} €</td>
+                      <td>{opt.minOrderValue ? `${opt.minOrderValue} €` : "-"}</td>
                       <td style={{ color: 'var(--stone-d)' }}>{opt.description || "-"}</td>
                       <td>
                         <form action={async () => { "use server"; await toggleShippingOption(opt.id, opt.isActive || false); }}>
