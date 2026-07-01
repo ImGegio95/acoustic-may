@@ -69,15 +69,15 @@ export default async function CatalogPage({
           </aside>
 
           <main className={styles.catMain}>
-            <div className={styles.searchBox}>
+            <div className={styles.searchBar}>
               <Search size={18} className={styles.searchIcon} strokeWidth={1.5} />
               <input type="text" placeholder="Cerca diffusori..." />
             </div>
             <div className={styles.catToolbar}>
-              <span>{formattedProducts.length} prodotti trovati</span>
-              <div className={styles.sort}>
-                <ArrowUpDown size={16} strokeWidth={1.5} />
-                <select>
+              <span className={styles.resultsCount}>{formattedProducts.length} prodotti trovati</span>
+              <div className={styles.sortWrapper}>
+                <label htmlFor="sort-select"><ArrowUpDown size={14} strokeWidth={1.5} /> Ordina per</label>
+                <select id="sort-select" className={styles.sortSelect}>
                   <option>In rilievo</option>
                   <option>Prezzo: crescente</option>
                   <option>Prezzo: decrescente</option>

@@ -5,77 +5,99 @@
 }
 
 .catHeader {
-  padding: 24px 0;
+  padding: 40px 0 20px;
 }
 
 .catHeader h1 {
-  font-size: clamp(26px, 3vw, 36px);
-  font-weight: 700;
+  font-size: clamp(32px, 5vw, 48px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
 .catHeader p {
   color: var(--stone-d);
-  font-size: 14px;
-  margin-top: 8px;
+  font-size: 16px;
+  margin-top: 12px;
 }
 
 .catLayout {
   display: flex;
-  gap: 32px;
-  padding: 32px 0 90px;
+  gap: 60px;
+  padding: 40px 0 120px;
 }
 
 .filters {
-  width: 230px;
+  width: 260px;
   flex-shrink: 0;
+  position: sticky;
+  top: 120px;
+  height: fit-content;
 }
 
 .filterGroup {
-  margin-bottom: 28px;
+  margin-bottom: 40px;
 }
 
 .filterGroup h5 {
-  font-size: 12px;
+  font-size: 11px;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-bottom: 12px;
+  letter-spacing: 0.12em;
+  margin-bottom: 20px;
   color: var(--stone-d);
-  font-family: var(--font-space-grotesk);
+  font-weight: 700;
 }
 
 .fChip {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 13.5px;
-  padding: 7px 0;
+  gap: 12px;
+  font-size: 14px;
+  padding: 10px 0;
   cursor: pointer;
-}
-
-.fChip .box {
-  width: 15px;
-  height: 15px;
-  border: 1.5px solid var(--stone);
-  border-radius: 4px;
+  color: var(--stone-dark);
   transition: all 0.2s;
 }
 
+.fChip:hover {
+  color: var(--ink);
+}
+
+.fChip .box {
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid var(--line);
+  border-radius: 5px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  background: var(--paper);
+}
+
+.fChip:hover .box {
+  border-color: var(--stone);
+}
+
 .checked .box {
-  background: var(--copper);
-  border-color: var(--copper);
+  background: var(--ink);
+  border-color: var(--ink);
+  box-shadow: 0 0 0 4px rgba(18, 18, 18, 0.05);
 }
 
 .checked {
-  color: var(--copper);
-  font-weight: 500;
+  color: var(--ink);
+  font-weight: 600;
 }
 
 .clearFilters {
   display: inline-block;
-  margin-top: 16px;
+  margin-top: 20px;
   font-size: 12px;
-  color: var(--stone-d);
-  text-decoration: underline;
+  color: var(--copper);
+  font-weight: 600;
+  border-bottom: 1px solid transparent;
+  transition: all 0.2s;
+}
+
+.clearFilters:hover {
+  border-bottom-color: var(--copper);
 }
 
 .catMain {
@@ -85,46 +107,116 @@
 .searchBar {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 14px;
+  background: var(--paper2);
   border: 1px solid var(--line);
-  border-radius: 100px;
-  padding: 10px 18px;
-  margin-bottom: 26px;
-  max-width: 420px;
+  border-radius: 16px;
+  padding: 14px 24px;
+  margin-bottom: 40px;
+  max-width: 600px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.searchBar:focus-within {
+  background: var(--paper);
+  border-color: var(--copper);
+  box-shadow: 0 10px 30px -10px rgba(189, 91, 44, 0.15);
+  transform: translateY(-2px);
+}
+
+.searchIcon {
+  color: var(--stone);
+  transition: color 0.3s;
+}
+
+.searchBar:focus-within .searchIcon {
+  color: var(--copper);
 }
 
 .searchBar input {
   border: none;
   outline: none;
-  font-size: 13.5px;
+  font-size: 15px;
   flex: 1;
   background: none;
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.searchBar input::placeholder {
+  color: var(--stone);
+  font-weight: 400;
 }
 
 .catToolbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.resultsCount {
   font-size: 13px;
   color: var(--stone-d);
+  font-weight: 500;
+}
+
+.sortWrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sortWrapper label {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--stone-d);
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .sortSelect {
+  background: var(--paper);
   border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 9px 14px;
+  border-radius: 10px;
+  padding: 8px 36px 8px 16px;
   font-size: 13px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  font-weight: 600;
+  color: var(--ink);
   cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23A39B8B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  transition: all 0.2s;
+}
+
+.sortSelect:hover {
+  border-color: var(--stone);
+  background-color: var(--paper2);
+}
+
+.sortSelect:focus {
+  outline: none;
+  border-color: var(--copper);
+  box-shadow: 0 0 0 3px rgba(189, 91, 44, 0.1);
 }
 
 .prodGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  gap: 40px 30px;
+}
+
+@media (max-width: 1200px) {
+  .catLayout {
+    gap: 40px;
+  }
 }
 
 @media (max-width: 1024px) {
@@ -136,29 +228,57 @@
 @media (max-width: 768px) {
   .catLayout {
     flex-direction: column;
+    padding-top: 20px;
   }
   .filters {
     width: 100%;
+    position: static;
     display: flex;
-    gap: 10px;
+    gap: 12px;
     overflow-x: auto;
-    padding-bottom: 10px;
+    padding-bottom: 20px;
+    scrollbar-width: none;
+  }
+  .filters::-webkit-scrollbar {
+    display: none;
   }
   .filterGroup {
     margin-bottom: 0;
     display: flex;
-    gap: 10px;
+    gap: 12px;
   }
   .fChip {
-    border: 1px solid var(--line);
-    padding: 8px 14px;
-    border-radius: 100px;
+    border: 1.5px solid var(--line);
+    padding: 10px 20px;
+    border-radius: 12px;
     white-space: nowrap;
+    background: var(--paper);
+  }
+  .checked {
+    border-color: var(--ink);
+    background: var(--ink);
+    color: var(--paper);
   }
   .fChip .box {
     display: none;
   }
   .filterGroup h5 {
     display: none;
+  }
+  .searchBar {
+    max-width: 100%;
+  }
+  .catToolbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  .sortWrapper {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .sortSelect {
+    flex: 1;
+    max-width: 200px;
   }
 }

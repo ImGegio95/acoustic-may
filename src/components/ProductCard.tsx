@@ -69,9 +69,8 @@ export default function ProductCard({ product }: ProductCardProps) {
         </div>
       </div>
       <div className={styles.pBuy}>
-        <button onClick={handleAddToCart}>
-          <ShoppingCart size={16} strokeWidth={1.5} />
-          Aggiungi
+        <button onClick={handleAddToCart} aria-label="Aggiungi al carrello">
+          <ShoppingCart size={18} strokeWidth={2} />
         </button>
       </div>
     </Link>
