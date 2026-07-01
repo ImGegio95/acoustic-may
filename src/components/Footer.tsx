@@ -24,9 +24,9 @@ export default function Footer() {
         </div>
         <div className={styles.footCol}>
           <h5>Negozio</h5>
-          <Link href="/catalogo?cat=studio">Studio Monitor</Link>
-          <Link href="/catalogo?cat=garden">Garden Audio</Link>
-          <Link href="/catalogo?cat=hifi">Home Hi-Fi</Link>
+          <Link href="/catalogo?cat=studio-monitor">Studio Monitor</Link>
+          <Link href="/catalogo?cat=garden-audio">Garden Audio</Link>
+          <Link href="/catalogo?cat=home-hifi">Home Hi-Fi</Link>
           <Link href="/catalogo?cat=accessori">Accessori</Link>
         </div>
         <div className={styles.footCol}>
