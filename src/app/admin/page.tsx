@@ -2,8 +2,9 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { getProducts, getCategories } from "@/lib/db-actions";
 import styles from "./page.module.css";
-import Link from "next/link";
-import { Plus, Edit3, Trash2, Package, Tag, BarChart3 } from "lucide-react";
+import { Package, Tag, BarChart3 } from "lucide-react";
+import AdminProductTable from "@/components/AdminProductTable";
+import AdminHeader from "@/components/AdminHeader";
 
 export default async function AdminDashboard() {
   const products = await getProducts();
@@ -14,15 +15,7 @@ export default async function AdminDashboard() {
       <Header />
       <main className={styles.adminPage}>
         <div className="container">
-          <header className={styles.header}>
-            <div>
-              <div className={styles.tag}>Gestione Store</div>
-              <h1>Dashboard Amministratore</h1>
-            </div>
-            <button className="btn btn-primary">
-              <Plus size={18} /> Nuovo Prodotto
-            </button>
-          </header>
+          <AdminHeader categories={categories} />
 
           <div className={styles.statsGrid}>
             <div className={styles.statCard}>
@@ -56,44 +49,7 @@ export default async function AdminDashboard() {
               </div>
             </div>
 
-            <div className={styles.tableWrapper}>
-              <table className={styles.table}>
-                <thead>
-                  <tr>
-                    <th>Immagine</th>
-                    <th>Nome Prodotto</th>
-                    <th>Categoria</th>
-                    <th>Prezzo</th>
-                    <th>Stato</th>
-                    <th>Azioni</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {products.map(p => (
-                    <tr key={p.id}>
-                      <td>
-                        <div className={styles.prodThumb}>
-                          {p.name.charAt(0)}
-                        </div>
-                      </td>
-                      <td className={styles.prodName}>
-                        <strong>{p.name}</strong>
-                        <span>/{p.slug}</span>
-                      </td>
-                      <td>{p.category?.name}</td>
-                      <td>{p.price} €</td>
-                      <td>
-                        <span className={`${styles.status} ${styles.active}`}>Attivo</span>
-                      </td>
-                      <td className={styles.actions}>
-                        <button className={styles.actionBtn} title="Modifica"><Edit3 size={16} /></button>
-                        <button className={styles.actionBtn} title="Elimina"><Trash2 size={16} /></button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <AdminProductTable products={products} />
           </section>
         </div>
       </main>
