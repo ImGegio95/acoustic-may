@@ -140,6 +140,16 @@
   font-style: italic;
 }
 
+.errorMsg {
+  background: #fee2e2;
+  color: #ef4444;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
 .registerPrompt {
   text-align: center;
 }

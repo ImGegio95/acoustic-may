@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import styles from "./page.module.css";
+import LoginForm from "@/components/LoginForm";
 
 export default function AccountPage() {
   return (
@@ -15,23 +16,11 @@ export default function AccountPage() {
         <div className={styles.container}>
           <div className={styles.loginCard}>
             <div className={styles.cardHeader}>
-              <h1>Bentornato</h1>
-              <p>Accedi alla tua area riservata Acoustic May</p>
+              <h1>Area Riservata</h1>
+              <p>Accedi per gestire lo store Acoustic May</p>
             </div>
 
-            <form className={styles.form}>
-              <div className={styles.inputGroup}>
-                <label htmlFor="email">Email</label>
-                <input type="email" id="email" placeholder="latua@email.it" />
-              </div>
-              <div className={styles.inputGroup}>
-                <label htmlFor="password">Password</label>
-                <input type="password" id="password" placeholder="••••••••" />
-                <a href="#" className={styles.forgot}>Password dimenticata?</a>
-              </div>
-
-              <button type="button" className="btn btn-primary w-full">Accedi ora</button>
-            </form>
+            <LoginForm />
 
             <div className={styles.divider}>
               <span>oppure</span>
