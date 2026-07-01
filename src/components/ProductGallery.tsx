@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { X, ZoomIn } from "lucide-react";
 import styles from "./ProductGallery.module.css";
+import { useGalleryStore } from "@/lib/store";
 
 interface ProductGalleryProps {
   images: string[];
@@ -13,6 +14,15 @@ interface ProductGalleryProps {
 export default function ProductGallery({ images, productName }: ProductGalleryProps) {
   const [activeImage, setActiveImage] = useState(images[0] || "/placeholder.webp");
   const [isZoomed, setIsZoomed] = useState(false);
+  
+  const activeVariantImage = useGalleryStore((s) => s.activeVariantImage);
+  const setActiveVariantImage = useGalleryStore((s) => s.setActiveVariantImage);
+
+  useEffect(() => {
+    if (activeVariantImage) {
+      setActiveImage(activeVariantImage);
+    }
+  }, [activeVariantImage]);
 
   return (
     <>
@@ -38,7 +48,10 @@ export default function ProductGallery({ images, productName }: ProductGalleryPr
               <div 
                 key={idx} 
                 className={`${styles.thumb} ${activeImage === img ? styles.active : ""}`}
-                onClick={() => setActiveImage(img)}
+                onClick={() => {
+                  setActiveImage(img);
+                  if (activeVariantImage) setActiveVariantImage(null);
+                }}
               >
                 <Image src={img} alt={`${productName} thumbnail ${idx}`} fill style={{ objectFit: 'cover', borderRadius: '6px' }} />
               </div>

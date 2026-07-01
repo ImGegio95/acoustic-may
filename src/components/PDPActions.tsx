@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useCartStore } from "@/lib/store";
+import { useCartStore, useGalleryStore } from "@/lib/store";
 import styles from "@/app/prodotto/[slug]/page.module.css";
 import { ShoppingCart, Heart } from "lucide-react";
 
@@ -17,6 +17,16 @@ export default function PDPActions({ product, variants = [] }: PDPActionsProps) 
   const [added, setAdded] = useState(false);
   
   const addItem = useCartStore((state) => state.addItem);
+  const setActiveVariantImage = useGalleryStore((state) => state.setActiveVariantImage);
+
+  const handleSelectVariant = (v: any) => {
+    setSelectedVariant(v);
+    if (v.image) {
+      setActiveVariantImage(v.image);
+    } else {
+      setActiveVariantImage(null);
+    }
+  };
 
   const displayPrice = selectedVariant ? selectedVariant.price : product.price;
   const priceValue = typeof displayPrice === 'string' 
@@ -56,7 +66,7 @@ export default function PDPActions({ product, variants = [] }: PDPActionsProps) 
                     key={v.id}
                     type="button"
                     className={`${styles.colorSwatch} ${selectedVariant?.id === v.id ? styles.activeSwatch : ""}`}
-                    onClick={() => setSelectedVariant(v)}
+                    onClick={() => handleSelectVariant(v)}
                     title={attrVal?.value || v.name}
                   >
                     <span 
@@ -76,7 +86,7 @@ export default function PDPActions({ product, variants = [] }: PDPActionsProps) 
                   key={v.id}
                   type="button"
                   className={`${styles.variationBtn} ${selectedVariant?.id === v.id ? styles.active : ""}`}
-                  onClick={() => setSelectedVariant(v)}
+                  onClick={() => handleSelectVariant(v)}
                 >
                   {attrVal?.value || v.name}
                 </button>

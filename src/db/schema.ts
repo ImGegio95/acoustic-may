@@ -6,8 +6,30 @@ import {
   timestamp,
   serial,
   bigint,
+  boolean,
 } from "drizzle-orm/mysql-core";
 import { relations } from "drizzle-orm";
+
+export const users = mysqlTable("users", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  email: varchar("email", { length: 255 }).notNull().unique(),
+  password: varchar("password", { length: 255 }).notNull(),
+  role: varchar("role", { length: 20 }).default("user"), // 'admin' or 'user'
+  
+  accountType: varchar("account_type", { length: 20 }).default("private"), // 'private' or 'company'
+  taxCode: varchar("tax_code", { length: 50 }),
+  vatNumber: varchar("vat_number", { length: 50 }),
+  pec: varchar("pec", { length: 100 }),
+  sdi: varchar("sdi", { length: 7 }),
+  
+  billingAddress: text("billing_address"),
+  shippingAddress: text("shipping_address"),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
+});
+
 
 export const categories = mysqlTable("categories", {
   id: serial("id").primaryKey(),
@@ -129,6 +151,13 @@ export const orders = mysqlTable("orders", {
   
   trackingUrl: varchar("tracking_url", { length: 255 }),
   stripeSessionId: varchar("stripe_session_id", { length: 255 }),
+  
+  userId: bigint("user_id", { mode: "number", unsigned: true }).references(() => users.id),
+  accountType: varchar("account_type", { length: 20 }).default("private"),
+  taxCode: varchar("tax_code", { length: 50 }),
+  vatNumber: varchar("vat_number", { length: 50 }),
+  pec: varchar("pec", { length: 100 }),
+  sdi: varchar("sdi", { length: 7 }),
   
   subtotal: decimal("subtotal", { precision: 10, scale: 2 }).notNull(),
   shippingCost: decimal("shipping_cost", { precision: 10, scale: 2 }).notNull().default('0.00'),

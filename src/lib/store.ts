@@ -67,3 +67,13 @@ export const useCartStore = create<CartStore>()(
     }
   )
 );
+
+export interface GalleryStore {
+  activeVariantImage: string | null;
+  setActiveVariantImage: (img: string | null) => void;
+}
+
+export const useGalleryStore = create<GalleryStore>((set) => ({
+  activeVariantImage: null,
+  setActiveVariantImage: (img) => set({ activeVariantImage: img }),
+}));

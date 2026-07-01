@@ -103,6 +103,22 @@ export default function AdminProductModal({ product, categories, attributes, onC
     setSpecsList(s);
   };
 
+  const handleVariantImageUpload = async (idx: number, e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) return;
+    const file = e.target.files[0];
+    const fd = new FormData();
+    fd.append("file", file);
+    try {
+      const res = await fetch("/api/upload", { method: "POST", body: fd });
+      const data = await res.json();
+      if (data.success) {
+        updateVariant(idx, 'image', data.url);
+      }
+    } catch (err) {
+      alert("Errore upload immagine variante");
+    }
+  };
+
   const handleAddVariant = () => {
     if (!newVar.name) {
       alert("Inserisci un nome per la variante");
@@ -368,6 +384,7 @@ export default function AdminProductModal({ product, categories, attributes, onC
                       <th>Variante</th>
                       <th>Prezzo</th>
                       <th>Stock</th>
+                      <th>Foto</th>
                       <th style={{ textAlign: 'right' }}>Azioni</th>
                     </tr>
                   </thead>
@@ -381,15 +398,17 @@ export default function AdminProductModal({ product, categories, attributes, onC
                             style={{ padding: '8px', border: '1px solid var(--line)', borderRadius: '6px', width: '100%', fontSize: '13px', fontWeight: 600 }}
                           />
                         </td>
-                        <td style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                          <input 
-                            type="number" 
-                            step="0.01" 
-                            value={v.price} 
-                            onChange={(e) => updateVariant(i, 'price', e.target.value)} 
-                            style={{ padding: '8px', border: '1px solid var(--line)', borderRadius: '6px', width: '90px', fontSize: '13px' }}
-                          />
-                          <span style={{ color: 'var(--stone-d)', fontSize: '13px' }}>€</span>
+                        <td>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <input 
+                              type="number" 
+                              step="0.01" 
+                              value={v.price} 
+                              onChange={(e) => updateVariant(i, 'price', e.target.value)} 
+                              style={{ padding: '8px', border: '1px solid var(--line)', borderRadius: '6px', width: '90px', fontSize: '13px' }}
+                            />
+                            <span style={{ color: 'var(--stone-d)', fontSize: '13px' }}>€</span>
+                          </div>
                         </td>
                         <td>
                           <input 
@@ -399,8 +418,19 @@ export default function AdminProductModal({ product, categories, attributes, onC
                             style={{ padding: '8px', border: '1px solid var(--line)', borderRadius: '6px', width: '70px', fontSize: '13px' }}
                           />
                         </td>
-                        <td className={styles.actions} style={{ justifyContent: 'flex-end' }}>
-                          <button type="button" onClick={() => removeVariant(i)} className={styles.iconBtnDanger} title="Elimina Variante"><Trash2 size={14} /></button>
+                        <td>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', height: '100%' }}>
+                            {v.image && <img src={v.image} style={{ width: '28px', height: '28px', borderRadius: '4px', objectFit: 'cover' }} alt="Var" />}
+                            <label style={{ cursor: 'pointer', fontSize: '12px', background: 'var(--paper2)', padding: '6px 10px', borderRadius: '4px', border: '1px solid var(--line)', whiteSpace: 'nowrap' }}>
+                              {v.image ? 'Cambia' : 'Foto'}
+                              <input type="file" accept="image/*" style={{ display: 'none' }} onChange={e => handleVariantImageUpload(i, e)} />
+                            </label>
+                          </div>
+                        </td>
+                        <td>
+                          <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
+                            <button type="button" onClick={() => removeVariant(i)} className={styles.iconBtnDanger} title="Elimina Variante"><Trash2 size={14} /></button>
+                          </div>
                         </td>
                       </tr>
                     ))}
