@@ -14,8 +14,14 @@ export default async function AnnunciPage() {
   return (
     <>
       <Header />
-      <main className={styles.main}>
-        <div className={styles.container}>
+      <main className={styles.adminPage}>
+        <div className="container">
+          <header className={styles.header}>
+            <div>
+              <h1>Barra Avvisi</h1>
+              <p>Gestisci i messaggi scorrevoli in cima al sito.</p>
+            </div>
+          </header>
           <AdminNav />
           <div className={styles.content}>
             <section className={styles.block}>

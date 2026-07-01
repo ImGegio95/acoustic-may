@@ -25,7 +25,7 @@ export default function CategoryClientPage({ categories }: { categories: any[] }
     <section className={styles.block}>
       <div className={styles.sectionHeader}>
         <div className={styles.headerLeft}>
-          <h2 style={{ margin: 0 }}>Gestione Categorie</h2>
+          <h2 style={{ margin: 0 }}>Elenco Categorie</h2>
         </div>
         <button onClick={openNew} className="btn btn-dark" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <Plus size={16} /> Nuova Categoria

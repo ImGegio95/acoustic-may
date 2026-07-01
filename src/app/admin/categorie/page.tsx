@@ -11,8 +11,14 @@ export default async function CategoriePage() {
   return (
     <>
       <Header />
-      <main className={styles.main}>
-        <div className={styles.container}>
+      <main className={styles.adminPage}>
+        <div className="container">
+          <header className={styles.header}>
+            <div>
+              <h1>Gestione Categorie</h1>
+              <p>Crea, modifica e ottimizza le categorie per i motori di ricerca.</p>
+            </div>
+          </header>
           <AdminNav />
           <div className={styles.content}>
             <CategoryClientPage categories={allCategories} />
