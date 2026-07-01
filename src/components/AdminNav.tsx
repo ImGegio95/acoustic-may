@@ -10,6 +10,9 @@ export default function AdminNav() {
       <Link href="/admin/categorie" className="btn btn-outline" style={{ background: 'white', whiteSpace: 'nowrap' }}>
         <FolderTree size={16} /> Categorie
       </Link>
+      <Link href="/admin/homepage" className="btn btn-outline" style={{ background: 'white', whiteSpace: 'nowrap' }}>
+        <ShoppingBag size={16} /> Home Page
+      </Link>
       <Link href="/admin/annunci" className="btn btn-outline" style={{ background: 'white', whiteSpace: 'nowrap' }}>
         <Megaphone size={16} /> Avvisi (Barra)
       </Link>

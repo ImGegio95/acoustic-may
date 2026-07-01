@@ -5,9 +5,27 @@ import styles from "./page.module.css";
 import Link from "next/link";
 import { getLatestProducts } from "@/lib/db-actions";
 
+import { db } from "@/db";
+import { settings } from "@/db/schema";
+import { eq } from "drizzle-orm";
+
 export default async function Home() {
-  const dbProducts = await getLatestProducts(8);
+  const dbProducts = await getLatestProducts(100);
   
+  const novitaSetting = await db.select().from(settings).where(eq(settings.key, "homepage_novita"));
+  const bestsellerSetting = await db.select().from(settings).where(eq(settings.key, "homepage_bestseller"));
+  const brandsSetting = await db.select().from(settings).where(eq(settings.key, "homepage_brands"));
+
+  let novitaIds: number[] = [];
+  let bestsellerIds: number[] = [];
+  let brandsList: string[] = ["NEUTRIK", "CELESTION", "DAYTON AUDIO", "MUNDORF", "SCAN-SPEAK"];
+
+  try {
+    if (novitaSetting.length > 0 && novitaSetting[0].value) novitaIds = JSON.parse(novitaSetting[0].value);
+    if (bestsellerSetting.length > 0 && bestsellerSetting[0].value) bestsellerIds = JSON.parse(bestsellerSetting[0].value);
+    if (brandsSetting.length > 0 && brandsSetting[0].value) brandsList = JSON.parse(brandsSetting[0].value);
+  } catch (e) {}
+
   // Format for the component
   const formattedProducts = dbProducts.map(p => ({
     id: p.id,
@@ -19,8 +37,13 @@ export default async function Home() {
     badge: p.badge
   }));
 
-  const news = formattedProducts.filter(p => p.badge === 'Novità').slice(0, 4);
-  const best = formattedProducts.slice(0, 4);
+  const news = novitaIds.length > 0 
+    ? novitaIds.map(id => formattedProducts.find(p => p.id === id)).filter(Boolean) as typeof formattedProducts
+    : formattedProducts.filter(p => p.badge === 'Novità').slice(0, 4);
+
+  const best = bestsellerIds.length > 0
+    ? bestsellerIds.map(id => formattedProducts.find(p => p.id === id)).filter(Boolean) as typeof formattedProducts
+    : formattedProducts.slice(0, 4);
 
   return (
     <>
@@ -145,17 +168,15 @@ export default async function Home() {
         </section>
 
 
-        <section className={styles.section} style={{ paddingTop: 0, paddingBottom: '80px' }}>
-          <div className="container">
-            <div className={styles.brandRow} style={{ borderTop: '1px solid var(--line)', padding: '30px 0', marginTop: '20px' }}>
-              <span>NEUTRIK</span>
-              <span>CELESTION</span>
-              <span>DAYTON AUDIO</span>
-              <span>MUNDORF</span>
-              <span>SCAN-SPEAK</span>
+        {brandsList.length > 0 && (
+          <section className={styles.section} style={{ paddingTop: 0, paddingBottom: '80px' }}>
+            <div className="container">
+              <div className={styles.brandRow} style={{ borderTop: '1px solid var(--line)', padding: '30px 0', marginTop: '20px' }}>
+                {brandsList.map((b, i) => <span key={i}>{b}</span>)}
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        )}
 
         <div className={styles.ctaFinal}>
           <h2>Ascolta la differenza fatta a mano.</h2>
