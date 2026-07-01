@@ -36,6 +36,9 @@ export const categories = mysqlTable("categories", {
   name: varchar("name", { length: 255 }).notNull(),
   slug: varchar("slug", { length: 255 }).notNull().unique(),
   description: text("description"),
+  image: varchar("image", { length: 255 }),
+  seoTitle: varchar("seo_title", { length: 255 }),
+  seoDescription: text("seo_description"),
 });
 
 export const products = mysqlTable("products", {
