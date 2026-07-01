@@ -116,12 +116,12 @@ export default function CategoryModal({ isOpen, onClose, cat = null }: { isOpen:
               </div>
               <div style={{ marginBottom: '16px' }}>
                 <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '8px' }}>SEO Title</label>
-                <input type="text" name="seoTitle" defaultValue={cat?.seoTitle} placeholder="Es: Chitarre Acustiche Professionali | Acoustic May" style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid var(--line)' }} />
+                <input type="text" name="seoTitle" defaultValue={cat?.seoTitle} placeholder="Es: Diffusori da Giardino Professionali | Acoustic May" style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid var(--line)' }} />
                 <span style={{ fontSize: '11px', color: 'var(--stone-d)', marginTop: '4px', display: 'block' }}>Ottimale: 50-60 caratteri.</span>
               </div>
               <div style={{ marginBottom: '16px' }}>
                 <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '8px' }}>SEO Description</label>
-                <textarea name="seoDescription" defaultValue={cat?.seoDescription} rows={3} placeholder="Es: Scopri la nostra selezione di chitarre acustiche artigianali..." style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid var(--line)', resize: 'vertical' }} />
+                <textarea name="seoDescription" defaultValue={cat?.seoDescription} rows={3} placeholder="Es: Scopri la nostra selezione di diffusori da giardino e accessori per esterni..." style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid var(--line)', resize: 'vertical' }} />
                 <span style={{ fontSize: '11px', color: 'var(--stone-d)', marginTop: '4px', display: 'block' }}>Ottimale: 150-160 caratteri.</span>
               </div>
             </div>

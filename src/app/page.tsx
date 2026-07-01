@@ -145,10 +145,14 @@ export default async function Home() {
         </section>
 
 
-        <section className={styles.section} style={{ paddingTop: 0, paddingBottom: '50px' }}>
+        <section className={styles.section} style={{ paddingTop: 0, paddingBottom: '80px' }}>
           <div className="container">
-            <div className={styles.brandRow}>
-              <span>NEUTRIK</span><span>CELESTION</span><span>DAYTON AUDIO</span><span>MUNDORF</span><span>SCAN-SPEAK</span>
+            <div className={styles.brandRow} style={{ borderTop: '1px solid var(--line)', padding: '30px 0', marginTop: '20px' }}>
+              <span>NEUTRIK</span>
+              <span>CELESTION</span>
+              <span>DAYTON AUDIO</span>
+              <span>MUNDORF</span>
+              <span>SCAN-SPEAK</span>
             </div>
           </div>
         </section>
