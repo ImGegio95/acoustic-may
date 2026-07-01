@@ -34,6 +34,15 @@ export default function AdminEmailPage() {
         if (selectedEvent === 'order_shipped') {
           setSubject("Il tuo ordine {{NUMERO_ORDINE}} è stato spedito!");
           setBodyHtml("<p>Ciao {{NOME_CLIENTE}},</p><p>Ti informiamo che il tuo ordine è stato affidato al corriere.</p><p>Puoi tracciare la spedizione cliccando su questo link: <a href='{{TRACKING_URL}}'>{{TRACKING_URL}}</a></p><p>Grazie per aver scelto Acoustic May!</p>");
+        } else if (selectedEvent === 'order_confirmed') {
+          setSubject("Conferma Ricezione Ordine {{NUMERO_ORDINE}}");
+          setBodyHtml("<p>Ciao {{NOME_CLIENTE}},</p><p>Abbiamo ricevuto correttamente il tuo pagamento di <strong>{{TOTALE}}</strong>. Stiamo già elaborando il tuo ordine.</p><p>Ecco un riepilogo degli articoli acquistati:</p>{{TABELLA_PRODOTTI}}<p>Ti avviseremo non appena il pacco verrà affidato al corriere.</p>");
+        } else if (selectedEvent === 'payment_cancelled') {
+          setSubject("Aggiornamento Ordine {{NUMERO_ORDINE}} - Pagamento Annullato");
+          setBodyHtml("<p>Ciao {{NOME_CLIENTE}},</p><p>Il pagamento per il tuo ordine è stato annullato. Nessun importo ti è stato addebitato.</p><p>Se si è trattato di un errore, puoi riprovare ad effettuare l'acquisto sul nostro sito.</p>");
+        } else if (selectedEvent === 'payment_refunded') {
+          setSubject("Rimborso Emesso per Ordine {{NUMERO_ORDINE}}");
+          setBodyHtml("<p>Ciao {{NOME_CLIENTE}},</p><p>Ti confermiamo di aver emesso un rimborso completo per il tuo ordine.</p><p>L'importo sarà visibile sul tuo metodo di pagamento entro 5-10 giorni lavorativi, a seconda del circuito della tua carta.</p>");
         }
       }
       
@@ -105,6 +114,7 @@ export default function AdminEmailPage() {
                 <code style={{ background: 'var(--paper2)', padding: '4px 8px', borderRadius: '6px', margin: '0 8px' }}>{`{{NUMERO_ORDINE}}`}</code>
                 <code style={{ background: 'var(--paper2)', padding: '4px 8px', borderRadius: '6px' }}>{`{{TRACKING_URL}}`}</code>
                 <code style={{ background: 'var(--paper2)', padding: '4px 8px', borderRadius: '6px', margin: '0 8px' }}>{`{{TOTALE}}`}</code>
+                <code style={{ background: 'var(--paper2)', padding: '4px 8px', borderRadius: '6px' }}>{`{{TABELLA_PRODOTTI}}`}</code>
               </p>
             )}
 
@@ -113,8 +123,10 @@ export default function AdminEmailPage() {
                 <div className={styles.field} style={{ marginBottom: '24px' }}>
                   <label>Evento Scatenante</label>
                   <select value={selectedEvent} onChange={e => setSelectedEvent(e.target.value)}>
+                    <option value="order_confirmed">Conferma Ordine (Al Pagamento)</option>
                     <option value="order_shipped">Ordine Spedito (Con Tracking)</option>
-                    {/* Future expansion: <option value="order_created">Ordine Ricevuto</option> */}
+                    <option value="payment_cancelled">Pagamento Annullato</option>
+                    <option value="payment_refunded">Ordine Rimborsato</option>
                   </select>
                 </div>
 

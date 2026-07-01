@@ -5,11 +5,13 @@ import styles from "./page.module.css";
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import Footer from "@/components/Footer";
+import { Lock, ShieldCheck, CreditCard } from "lucide-react";
 
 export default function CheckoutPage() {
   const { items, getTotal } = useCartStore();
   const [mounted, setMounted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState("");
 
   useEffect(() => {
     setMounted(true);
@@ -27,6 +29,36 @@ export default function CheckoutPage() {
     );
   }
 
+  const subtotal = getTotal();
+  const shipping = subtotal > 100 ? 0 : 9.90;
+  const total = subtotal + shipping;
+
+  const handleCheckout = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          items,
+          customerEmail: email,
+        })
+      });
+      const data = await res.json();
+      if (data.url) {
+        // Reindirizza al server sicuro di Stripe
+        window.location.href = data.url;
+      } else {
+        alert("Errore durante la creazione del pagamento: " + data.error);
+        setLoading(false);
+      }
+    } catch (e) {
+      alert("Errore di rete. Riprova.");
+      setLoading(false);
+    }
+  };
+
   return (
     <div className={styles.checkoutWrapper}>
       <header className={styles.checkoutHeader}>
@@ -39,58 +71,52 @@ export default function CheckoutPage() {
           />
         </Link>
         <div className={styles.steps}>
-          <span className={styles.active}>Pagamento sicuro</span>
+          <span className={styles.active}><Lock size={14} style={{ marginRight: '6px' }}/> Checkout Sicuro</span>
         </div>
       </header>
 
       <main className={styles.main}>
         <div className={styles.formSection}>
           <section className={styles.block}>
-            <h3>1. Spedizione</h3>
-            <div className={styles.formGrid}>
-              <div className={styles.field}>
-                <label>Email</label>
-                <input type="email" placeholder="nome@esempio.it" />
+            <h3>Dati di contatto</h3>
+            <p style={{ color: 'var(--stone-d)', fontSize: '14px', marginBottom: '24px' }}>
+              Inserisci la tua email per ricevere la conferma dell'ordine. Ti verrà chiesto l'indirizzo di spedizione al prossimo step.
+            </p>
+            <form onSubmit={handleCheckout}>
+              <div className={styles.field} style={{ marginBottom: '32px' }}>
+                <label>Email *</label>
+                <input 
+                  type="email" 
+                  required 
+                  placeholder="nome@esempio.it" 
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
               </div>
-              <div className={styles.formRow}>
-                <div className={styles.field}>
-                  <label>Nome</label>
-                  <input type="text" placeholder="Nome" />
-                </div>
-                <div className={styles.field}>
-                  <label>Cognome</label>
-                  <input type="text" placeholder="Cognome" />
-                </div>
-              </div>
-              <div className={styles.field}>
-                <label>Indirizzo</label>
-                <input type="text" placeholder="Via, Piazza..." />
-              </div>
-              <div className={styles.formRow}>
-                <div className={styles.field}>
-                  <label>Città</label>
-                  <input type="text" placeholder="Città" />
-                </div>
-                <div className={styles.field}>
-                  <label>CAP</label>
-                  <input type="text" placeholder="CAP" />
-                </div>
-              </div>
-            </div>
-          </section>
 
-          <section className={styles.block}>
-            <h3>2. Metodo di pagamento</h3>
-            <div className={styles.paymentMethods}>
-              <div className={`${styles.method} ${styles.active}`}>
-                <input type="radio" checked readOnly />
-                <label>Carta di Credito / Stripe</label>
+              <div style={{ background: 'var(--paper2)', padding: '24px', borderRadius: '12px', border: '1px solid var(--line)', marginBottom: '32px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+                  <ShieldCheck size={24} color="#10b981" />
+                  <h4 style={{ margin: 0 }}>Pagamento Sicuro Garantito</h4>
+                </div>
+                <p style={{ fontSize: '14px', color: 'var(--stone-d)', margin: 0, lineHeight: 1.5 }}>
+                  Cliccando su "Procedi", verrai reindirizzato sui server certificati PCI DSS di Stripe per inserire l'indirizzo di spedizione e la tua carta in totale sicurezza. Nessun dato della carta verrà salvato sui nostri server.
+                </p>
+                <div style={{ display: 'flex', gap: '12px', marginTop: '16px', color: 'var(--stone-dark)' }}>
+                  <CreditCard size={20} />
+                  <span style={{ fontSize: '14px', fontWeight: 600 }}>Supporta: Visa, Mastercard, Amex, Apple Pay, Google Pay</span>
+                </div>
               </div>
-              <div className={styles.method}>
-                <input type="radio" disabled />
-                <label>PayPal (Prossimamente)</label>
-              </div>
-            </div>
+
+              <button 
+                type="submit" 
+                className="btn btn-dark" 
+                style={{ width: '100%', padding: '16px', fontSize: '18px' }}
+                disabled={loading}
+              >
+                {loading ? "Generazione Checkout..." : "Procedi al Pagamento Sicuro"}
+              </button>
+            </form>
           </section>
         </div>
 
@@ -98,37 +124,35 @@ export default function CheckoutPage() {
           <div className={styles.summaryCard}>
             <h3>Riepilogo Ordine</h3>
             <div className={styles.itemList}>
-              {items.map(item => (
-                <div key={item.id} className={styles.item}>
-                  <div className={styles.itemName}>
-                    {item.name} <span>x{item.quantity}</span>
+              {items.map((item, i) => (
+                <div key={i} className={styles.itemRow}>
+                  <div className={styles.itemInfo}>
+                    <span className={styles.itemName}>{item.name}</span>
+                    <span className={styles.itemQty}>Qtà: {item.quantity}</span>
                   </div>
-                  <div className={styles.itemPrice}>{(item.price * item.quantity).toFixed(2)} €</div>
+                  <div className={styles.itemPrice}>
+                    {Number(item.price * item.quantity).toFixed(2)} €
+                  </div>
                 </div>
               ))}
             </div>
-            <div className={styles.totals}>
-              <div className={styles.totalRow}>
-                <span>Subtotale</span>
-                <span>{getTotal().toFixed(2)} €</span>
-              </div>
-              <div className={styles.totalRow}>
-                <span>Spedizione</span>
-                <span>Gratis</span>
-              </div>
-              <div className={`${styles.totalRow} ${styles.grandTotal}`}>
-                <span>Totale</span>
-                <span>{getTotal().toFixed(2)} €</span>
-              </div>
+            
+            <div className={styles.totalsRow}>
+              <span>Subtotale</span>
+              <span>{subtotal.toFixed(2)} €</span>
             </div>
-            <button className="btn btn-primary" style={{ width: '100%', justifyContent: 'center', marginTop: '24px' }}>
-              Paga Ora
-            </button>
-            <p className={styles.secure}>🔒 Pagamento crittografato e sicuro</p>
+            <div className={styles.totalsRow}>
+              <span>Spedizione</span>
+              <span>{shipping === 0 ? "Gratis" : `${shipping.toFixed(2)} €`}</span>
+            </div>
+            
+            <div className={styles.finalTotal}>
+              <span>Totale</span>
+              <span>{total.toFixed(2)} €</span>
+            </div>
           </div>
         </aside>
       </main>
-      <Footer />
     </div>
   );
 }

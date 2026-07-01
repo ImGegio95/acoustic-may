@@ -61,7 +61,12 @@ export default function PDPActions({ product, variants = [] }: PDPActionsProps) 
                   >
                     <span 
                       className={styles.colorCircle} 
-                      style={{ backgroundColor: attrVal?.hexColor || "#ccc" }}
+                      style={{ 
+                        backgroundColor: attrVal?.hexColor || "#ccc",
+                        backgroundImage: attrVal?.imageUrl ? `url(${attrVal.imageUrl})` : undefined,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center'
+                      }}
                     />
                   </button>
                 );

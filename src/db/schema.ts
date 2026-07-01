@@ -21,12 +21,13 @@ export const products = mysqlTable("products", {
   name: varchar("name", { length: 255 }).notNull(),
   slug: varchar("slug", { length: 255 }).notNull().unique(),
   description: text("description"),
+  technicalSpecs: text("technical_specs"),
+  technicalSheetUrl: varchar("technical_sheet_url", { length: 255 }),
   price: decimal("price", { precision: 10, scale: 2 }).notNull(),
   categoryId: bigint("category_id", { mode: "number", unsigned: true }).references(() => categories.id),
   image: varchar("image", { length: 255 }),
   images: text("images"), // JSON string for gallery
   badge: varchar("badge", { length: 50 }),
-  technicalSpecs: text("technical_specs"), // JSON string
   type: varchar("type", { length: 20 }).default("simple"), // 'simple' or 'variable'
   seoTitle: varchar("seo_title", { length: 255 }),
   seoDescription: text("seo_description"),
@@ -38,7 +39,7 @@ export const attributes = mysqlTable("attributes", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 255 }).notNull(),
   slug: varchar("slug", { length: 255 }).notNull().unique(),
-  displayType: varchar("display_type", { length: 20 }).default("text"), // 'text' or 'color'
+  displayType: varchar("display_type", { length: 20 }).default("text"), // 'text', 'color' or 'image'
 });
 
 export const attrValues = mysqlTable("attr_values", {
@@ -47,6 +48,7 @@ export const attrValues = mysqlTable("attr_values", {
   value: varchar("value", { length: 255 }).notNull(),
   slug: varchar("slug", { length: 255 }).notNull(),
   hexColor: varchar("hex_color", { length: 7 }), // e.g. #000000
+  imageUrl: varchar("image_url", { length: 255 }),
 });
 
 export const productVariants = mysqlTable("product_variants", {
@@ -126,6 +128,7 @@ export const orders = mysqlTable("orders", {
   orderStatus: varchar("order_status", { length: 50 }).default("aperto"),
   
   trackingUrl: varchar("tracking_url", { length: 255 }),
+  stripeSessionId: varchar("stripe_session_id", { length: 255 }),
   
   subtotal: decimal("subtotal", { precision: 10, scale: 2 }).notNull(),
   shippingCost: decimal("shipping_cost", { precision: 10, scale: 2 }).notNull().default('0.00'),

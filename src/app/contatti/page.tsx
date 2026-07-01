@@ -69,7 +69,8 @@ export default function ContactPage() {
             </div>
             <div className={styles.mapBox}>
               <iframe 
-                src="https://maps.google.com/maps?q=V.+dei+Muratori,+sn,+73018+Squinzano+LE&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                src="https://maps.google.com/maps?q=40.439733,18.054636&t=&z=16&ie=UTF8&iwloc=&output=embed"
+                width="100%" 
                 className={styles.mapIframe}
                 allowFullScreen={false} 
                 loading="lazy" 

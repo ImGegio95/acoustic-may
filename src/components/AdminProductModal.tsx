@@ -12,6 +12,21 @@ export default function AdminProductModal({ product, categories, attributes, onC
   const initialImages = product?.images ? JSON.parse(product.images) : (product?.image ? [product.image] : []);
   const [imagesList, setImagesList] = useState<string[]>(initialImages);
 
+  let initialSpecs: { key: string, value: string }[] = [];
+  try {
+    if (product?.technicalSpecs) {
+      const parsed = JSON.parse(product.technicalSpecs);
+      if (Array.isArray(parsed)) {
+        initialSpecs = parsed;
+      } else if (typeof parsed === 'object') {
+         initialSpecs = Object.entries(parsed).map(([k, v]) => ({ key: k, value: String(v) }));
+      }
+    }
+  } catch(e) {
+    // Era salvato come HTML (Tiptap), lo ignoriamo per ora
+  }
+  const [specsList, setSpecsList] = useState<{key: string, value: string}[]>(initialSpecs);
+
   const [formData, setFormData] = useState({
     name: product?.name || "",
     slug: product?.slug || "",
@@ -22,7 +37,31 @@ export default function AdminProductModal({ product, categories, attributes, onC
     seoTitle: product?.seoTitle || "",
     seoDescription: product?.seoDescription || "",
     badge: product?.badge || "",
+    technicalSheetUrl: product?.technicalSheetUrl || "",
   });
+
+  const [uploadingPdf, setUploadingPdf] = useState(false);
+  
+  const handlePdfUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) return;
+    const file = e.target.files[0];
+    const fd = new FormData();
+    fd.append("file", file);
+
+    setUploadingPdf(true);
+    try {
+      const res = await fetch("/api/upload", { method: "POST", body: fd });
+      const data = await res.json();
+      if (data.success) {
+        setFormData({ ...formData, technicalSheetUrl: data.url });
+      } else {
+        alert("Errore upload: " + data.error);
+      }
+    } catch (err) {
+      alert("Errore di rete durante upload");
+    }
+    setUploadingPdf(false);
+  };
 
   const moveImgUp = (idx: number) => {
     if (idx === 0) return;
@@ -52,6 +91,18 @@ export default function AdminProductModal({ product, categories, attributes, onC
   const [newVar, setNewVar] = useState({ name: "", price: "", stock: 0 });
   const [newVarAttrs, setNewVarAttrs] = useState<Record<number, number>>({});
 
+  const addSpec = () => setSpecsList([...specsList, { key: "", value: "" }]);
+  const removeSpec = (idx: number) => {
+    const s = [...specsList];
+    s.splice(idx, 1);
+    setSpecsList(s);
+  };
+  const updateSpec = (idx: number, field: 'key'|'value', val: string) => {
+    const s = [...specsList];
+    s[idx] = { ...s[idx], [field]: val };
+    setSpecsList(s);
+  };
+
   const handleAddVariant = () => {
     if (!newVar.name) {
       alert("Inserisci un nome per la variante");
@@ -80,6 +131,7 @@ export default function AdminProductModal({ product, categories, attributes, onC
     try {
       const dataToSave = {
         ...formData,
+        technicalSpecs: JSON.stringify(specsList),
         image: imagesList.length > 0 ? imagesList[0] : "",
         images: JSON.stringify(imagesList),
         variants: variants
@@ -191,6 +243,51 @@ export default function AdminProductModal({ product, categories, attributes, onC
               value={formData.description} 
               onChange={val => setFormData({...formData, description: val})}
             />
+          </div>
+
+          <hr className={styles.hr} />
+          <h4>Specifiche e Manuali</h4>
+          
+          <div className={styles.field}>
+            <label>Specifiche Tecniche</label>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {specsList.map((spec, idx) => (
+                <div key={idx} style={{ display: 'flex', gap: '8px' }}>
+                  <input 
+                    placeholder="Es. Peso" 
+                    value={spec.key} 
+                    onChange={e => updateSpec(idx, 'key', e.target.value)} 
+                    style={{ flex: 1 }}
+                  />
+                  <input 
+                    placeholder="Es. 10 kg" 
+                    value={spec.value} 
+                    onChange={e => updateSpec(idx, 'value', e.target.value)} 
+                    style={{ flex: 1 }}
+                  />
+                  <button type="button" onClick={() => removeSpec(idx)} className={styles.iconBtnDanger}><Trash2 size={16} /></button>
+                </div>
+              ))}
+              <button type="button" onClick={addSpec} className="btn btn-outline" style={{ width: 'fit-content', marginTop: '4px' }}><Plus size={16} /> Aggiungi Specifica</button>
+            </div>
+          </div>
+
+          <div className={styles.field}>
+            <label>Scheda Tecnica / Manuale (PDF)</label>
+            <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+              <input 
+                type="text" 
+                value={formData.technicalSheetUrl} 
+                onChange={e => setFormData({...formData, technicalSheetUrl: e.target.value})} 
+                placeholder="URL del PDF (es. /uploads/manuale.pdf)"
+                style={{ flex: 1, padding: '12px', borderRadius: '8px', border: '1px solid var(--line)', background: 'var(--paper2)', outline: 'none' }}
+              />
+              <label style={{ cursor: 'pointer', background: 'var(--ink)', color: 'var(--paper)', padding: '12px 24px', borderRadius: '8px', fontSize: '14px', fontWeight: 500, whiteSpace: 'nowrap' }}>
+                {uploadingPdf ? "Caricamento..." : "Scegli File PDF"}
+                <input type="file" accept=".pdf,application/pdf" style={{ display: 'none' }} onChange={handlePdfUpload} disabled={uploadingPdf} />
+              </label>
+            </div>
+            <p style={{ fontSize: '12px', color: 'var(--stone-d)', marginTop: '8px' }}>Seleziona un file PDF dal tuo computer oppure incolla un link esterno se è già caricato altrove.</p>
           </div>
 
           <hr className={styles.hr} />

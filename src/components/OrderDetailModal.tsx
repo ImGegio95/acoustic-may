@@ -86,7 +86,11 @@ export default function OrderDetailModal({ orderId, onClose }: { orderId: number
                   <option value="aperto">Aperto (In attesa)</option>
                   <option value="pagato">Pagato</option>
                   <option value="annullato">Annullato</option>
+                  <option value="rimborsato">Rimborsato</option>
                 </select>
+                {(paymentStatus === 'annullato' || paymentStatus === 'rimborsato') && order.paymentStatus !== paymentStatus && (
+                  <p style={{ fontSize: '11px', color: '#ca8a04', marginTop: '6px' }}>* Un'email automatica avviserà il cliente.</p>
+                )}
               </div>
               
               <div className={styles.field}>

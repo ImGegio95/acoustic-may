@@ -15,6 +15,7 @@ export default function OrdersTable({ initialOrders }: { initialOrders: any[] })
       case 'spedito': 
       case 'completato': return { bg: '#e6f6ee', color: '#10b981' };
       case 'annullato': return { bg: '#fee2e2', color: '#ef4444' };
+      case 'rimborsato': return { bg: '#fef08a', color: '#ca8a04' }; // Giallo
       default: return { bg: '#e0f2fe', color: '#0284c7' };
     }
   };

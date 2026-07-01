@@ -25,6 +25,27 @@ export default function AdminAttributes({ attributes }: AdminAttributesProps) {
     await updateAttrValue(valId, { hexColor: hex });
   };
 
+  const handleUpdateImage = async (valId: number, e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) return;
+    const file = e.target.files[0];
+    const fd = new FormData();
+    fd.append("file", file);
+    setLoading(valId);
+    try {
+      const res = await fetch("/api/upload", { method: "POST", body: fd });
+      const data = await res.json();
+      if (data.success) {
+        await updateAttrValue(valId, { imageUrl: data.url });
+      } else {
+        alert("Errore upload: " + data.error);
+      }
+    } catch (err) {
+      alert("Errore caricamento immagine");
+    } finally {
+      setLoading(null);
+    }
+  };
+
   const handleAddAttribute = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newAttr.name || !newAttr.slug) return;
@@ -95,6 +116,13 @@ export default function AdminAttributes({ attributes }: AdminAttributesProps) {
                         className={styles.hexInput}
                         placeholder="#000000"
                       />
+                      <label style={{ cursor: 'pointer', background: 'var(--paper2)', padding: '6px 12px', borderRadius: '6px', fontSize: '12px', border: '1px solid var(--line)', display: 'flex', alignItems: 'center' }}>
+                        {loading === val.id ? "..." : (val.imageUrl ? "Cambia Immagine" : "Aggiungi Immagine")}
+                        <input type="file" accept="image/*" style={{ display: 'none' }} onChange={(e) => handleUpdateImage(val.id, e)} disabled={loading === val.id} />
+                      </label>
+                      {val.imageUrl && (
+                         <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundImage: `url(${val.imageUrl})`, backgroundSize: 'cover', backgroundPosition: 'center', border: '1px solid var(--line)' }} />
+                      )}
                     </div>
                   )}
                 </div>
