@@ -5,6 +5,7 @@ import styles from "./page.module.css";
 import { Package, Tag, BarChart3 } from "lucide-react";
 import AdminProductTable from "@/components/AdminProductTable";
 import AdminHeader from "@/components/AdminHeader";
+import AdminNav from "@/components/AdminNav";
 import AdminSettings from "@/components/AdminSettings";
 import AdminAttributes from "@/components/AdminAttributes";
 
@@ -21,6 +22,8 @@ export default async function AdminDashboard() {
       <main className={styles.adminPage}>
         <div className="container">
           <AdminHeader categories={categories} attributes={attributes} />
+          
+          <AdminNav />
 
           {/* ... stats ... */}
           <div className={styles.statsGrid}>

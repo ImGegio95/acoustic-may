@@ -5,9 +5,9 @@ import { X, Plus, Trash2 } from "lucide-react";
 import styles from "@/app/admin/page.module.css";
 import { createProduct, updateProduct } from "@/lib/db-actions";
 import dynamic from "next/dynamic";
-import "react-quill/dist/quill.snow.css";
+import "react-quill-new/dist/quill.snow.css";
 
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false, loading: () => <p style={{ padding: '16px', color: 'var(--stone)' }}>Caricamento editor...</p> });
+const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false, loading: () => <p style={{ padding: '16px', color: 'var(--stone)' }}>Caricamento editor...</p> });
 
 export default function AdminProductModal({ product, categories, attributes, onClose }: { product?: any, categories: any[], attributes: any[], onClose: () => void }) {
   const [loading, setLoading] = useState(false);

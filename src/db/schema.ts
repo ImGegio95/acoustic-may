@@ -111,3 +111,67 @@ export const attrValuesRelations = relations(attrValues, ({ one }) => ({
 export const attributesRelations = relations(attributes, ({ many }) => ({
   values: many(attrValues),
 }));
+
+export const orders = mysqlTable("orders", {
+  id: serial("id").primaryKey(),
+  orderNumber: varchar("order_number", { length: 50 }).notNull().unique(),
+  customerEmail: varchar("customer_email", { length: 255 }).notNull(),
+  customerName: varchar("customer_name", { length: 255 }).notNull(),
+  customerPhone: varchar("customer_phone", { length: 50 }),
+  shippingAddress: text("shipping_address"),
+  billingAddress: text("billing_address"),
+  
+  paymentStatus: varchar("payment_status", { length: 50 }).default("aperto"),
+  shippingStatus: varchar("shipping_status", { length: 50 }).default("aperto"),
+  orderStatus: varchar("order_status", { length: 50 }).default("aperto"),
+  
+  trackingUrl: varchar("tracking_url", { length: 255 }),
+  
+  subtotal: decimal("subtotal", { precision: 10, scale: 2 }).notNull(),
+  shippingCost: decimal("shipping_cost", { precision: 10, scale: 2 }).notNull().default('0.00'),
+  total: decimal("total", { precision: 10, scale: 2 }).notNull(),
+  
+  notes: text("notes"),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
+});
+
+export const orderItems = mysqlTable("order_items", {
+  id: serial("id").primaryKey(),
+  orderId: bigint("order_id", { mode: "number", unsigned: true }).references(() => orders.id),
+  productId: bigint("product_id", { mode: "number", unsigned: true }).references(() => products.id),
+  variantId: bigint("variant_id", { mode: "number", unsigned: true }).references(() => productVariants.id),
+  productName: varchar("product_name", { length: 255 }).notNull(),
+  variantName: varchar("variant_name", { length: 255 }),
+  quantity: bigint("quantity", { mode: "number" }).notNull(),
+  unitPrice: decimal("unit_price", { precision: 10, scale: 2 }).notNull(),
+  totalPrice: decimal("total_price", { precision: 10, scale: 2 }).notNull(),
+});
+
+export const emailTemplates = mysqlTable("email_templates", {
+  id: serial("id").primaryKey(),
+  triggerEvent: varchar("trigger_event", { length: 100 }).notNull().unique(),
+  subject: varchar("subject", { length: 255 }).notNull(),
+  bodyHtml: text("body_html").notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
+});
+
+export const ordersRelations = relations(orders, ({ many }) => ({
+  items: many(orderItems),
+}));
+
+export const orderItemsRelations = relations(orderItems, ({ one }) => ({
+  order: one(orders, {
+    fields: [orderItems.orderId],
+    references: [orders.id],
+  }),
+  product: one(products, {
+    fields: [orderItems.productId],
+    references: [products.id],
+  }),
+  variant: one(productVariants, {
+    fields: [orderItems.variantId],
+    references: [productVariants.id],
+  }),
+}));
