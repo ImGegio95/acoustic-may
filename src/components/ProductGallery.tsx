@@ -24,6 +24,12 @@ export default function ProductGallery({ images, productName }: ProductGalleryPr
     }
   }, [activeVariantImage]);
 
+  // Reset main image when navigating to a new product
+  useEffect(() => {
+    setActiveImage(images[0] || "/placeholder.webp");
+    setActiveVariantImage(null);
+  }, [images, setActiveVariantImage]);
+
   return (
     <>
       <div className={styles.gallery}>

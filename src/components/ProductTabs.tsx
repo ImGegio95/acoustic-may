@@ -59,13 +59,22 @@ export default function ProductTabs({ description, specs, sheetUrl }: ProductTab
           <div>
             {(() => {
               if (!specs) return <p>Nessuna specifica tecnica disponibile.</p>;
-              let parsedSpecs = [];
+              let parsedSpecs: any = [];
               try {
                 parsedSpecs = JSON.parse(specs);
               } catch (e) {
                 // Se è HTML vecchio
                 return <div className="tiptap-editor-content" dangerouslySetInnerHTML={{ __html: specs }} style={{ color: 'var(--stone-dark)', lineHeight: '1.6' }} />;
               }
+              
+              if (!Array.isArray(parsedSpecs)) {
+                // Se non è un array, proviamo a stamparlo come testo semplice se è una stringa o mostriamo errore.
+                if (typeof parsedSpecs === 'string') {
+                  return <div className="tiptap-editor-content" dangerouslySetInnerHTML={{ __html: parsedSpecs }} style={{ color: 'var(--stone-dark)', lineHeight: '1.6' }} />;
+                }
+                return <p>Specifiche in un formato non supportato.</p>;
+              }
+              
               if (parsedSpecs.length === 0) return <p>Nessuna specifica tecnica disponibile.</p>;
               
               return (

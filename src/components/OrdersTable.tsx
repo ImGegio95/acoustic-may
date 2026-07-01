@@ -63,15 +63,17 @@ export default function OrdersTable({ initialOrders }: { initialOrders: any[] })
                     {order.shippingStatus}
                   </span>
                 </td>
-                <td className={styles.actions}>
-                  <button 
-                    type="button" 
-                    className={styles.iconBtn} 
-                    onClick={() => setSelectedOrder(order)}
-                    title="Vedi Dettagli"
-                  >
-                    <Eye size={16} />
-                  </button>
+                <td>
+                  <div className={styles.actions}>
+                    <button 
+                      type="button" 
+                      className={styles.iconBtn} 
+                      onClick={() => setSelectedOrder(order)}
+                      title="Vedi Dettagli"
+                    >
+                      <Eye size={16} />
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))

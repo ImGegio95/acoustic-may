@@ -54,13 +54,13 @@ export async function updateAttrValue(id: number, data: any) {
 export async function createAttribute(data: any) {
   const res = await db.insert(attributes).values(data);
   revalidatePath("/admin");
-  return res;
+  return { success: true };
 }
 
 export async function createAttrValue(data: any) {
   const res = await db.insert(attrValues).values(data);
   revalidatePath("/admin");
-  return res;
+  return { success: true };
 }
 
 export async function getLatestProducts(limit = 4) {
@@ -143,7 +143,7 @@ export async function createProduct(data: any) {
 
   revalidatePath("/admin");
   revalidatePath("/catalogo");
-  return res;
+  return { success: true };
 }
 
 export async function updateProduct(id: number, data: any) {
@@ -186,35 +186,35 @@ export async function updateProduct(id: number, data: any) {
 
   revalidatePath("/admin");
   revalidatePath("/catalogo");
-  return res;
+  return { success: true };
 }
 
 export async function deleteProduct(id: number) {
   const res = await db.delete(products).where(eq(products.id, id));
   revalidatePath("/admin");
   revalidatePath("/catalogo");
-  return res;
+  return { success: true };
 }
 
 export async function createCategory(data: any) {
   const res = await db.insert(categories).values(data);
   revalidatePath("/admin");
   revalidatePath("/catalogo");
-  return res;
+  return { success: true };
 }
 
 export async function updateCategory(id: number, data: any) {
   const res = await db.update(categories).set(data).where(eq(categories.id, id));
   revalidatePath("/admin");
   revalidatePath("/catalogo");
-  return res;
+  return { success: true };
 }
 
 export async function deleteCategory(id: number) {
   const res = await db.delete(categories).where(eq(categories.id, id));
   revalidatePath("/admin");
   revalidatePath("/catalogo");
-  return res;
+  return { success: true };
 }
 
 // SETTINGS ACTIONS

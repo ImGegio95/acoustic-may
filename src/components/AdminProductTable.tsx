@@ -58,22 +58,24 @@ export default function AdminProductTable({ products, categories, attributes }: 
                 <td>
                   <span className={`${styles.status} ${styles.active}`}>Attivo</span>
                 </td>
-                <td className={styles.actions}>
-                  <button 
-                    className={styles.actionBtn} 
-                    title="Modifica"
-                    onClick={() => setEditingProduct(p)}
-                  >
-                    <Edit3 size={16} />
-                  </button>
-                  <button 
-                    className={`${styles.actionBtn} ${styles.delete}`} 
-                    title="Elimina"
-                    onClick={() => handleDelete(p.id)}
-                    disabled={isDeleting === p.id}
-                  >
-                    <Trash2 size={16} />
-                  </button>
+                <td>
+                  <div className={styles.actions}>
+                    <button 
+                      className={styles.actionBtn} 
+                      title="Modifica"
+                      onClick={() => setEditingProduct(p)}
+                    >
+                      <Edit3 size={16} />
+                    </button>
+                    <button 
+                      className={`${styles.actionBtn} ${styles.delete}`} 
+                      title="Elimina"
+                      onClick={() => handleDelete(p.id)}
+                      disabled={isDeleting === p.id}
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}

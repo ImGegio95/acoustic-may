@@ -10,7 +10,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { items, customerEmail, customerName, customerPhone, notes } = body;
+    const { items, customerEmail, customerName, customerPhone, notes, userId, accountType, taxCode, vatNumber, pec, sdi } = body;
 
     if (!items || items.length === 0) {
       return NextResponse.json({ error: "Il carrello è vuoto" }, { status: 400 });
@@ -87,6 +87,12 @@ export async function POST(req: Request) {
       customerName: customerName || 'Sconosciuto',
       customerEmail: customerEmail || 'no-email@example.com',
       customerPhone,
+      userId: userId || null,
+      accountType: accountType || 'private',
+      taxCode: taxCode || null,
+      vatNumber: vatNumber || null,
+      pec: pec || null,
+      sdi: sdi || null,
       subtotal: subtotal.toString(),
       shippingCost: shippingCost.toString(),
       total: finalTotal.toString(),

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Package, Mail, ShoppingBag } from "lucide-react";
+import { Package, Mail, ShoppingBag, Users } from "lucide-react";
 
 export default function AdminNav() {
   return (
@@ -12,6 +12,9 @@ export default function AdminNav() {
       </Link>
       <Link href="/admin/email" className="btn btn-outline" style={{ background: 'white', whiteSpace: 'nowrap' }}>
         <Mail size={16} /> Email Transazionali
+      </Link>
+      <Link href="/admin/clienti" className="btn btn-outline" style={{ background: 'white', whiteSpace: 'nowrap' }}>
+        <Users size={16} /> Rubrica Clienti
       </Link>
     </div>
   );
