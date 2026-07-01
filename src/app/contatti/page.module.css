@@ -1,0 +1,99 @@
+.contactHero {
+  padding: 100px 0 60px;
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.contactHero h1 {
+  font-size: 42px;
+  margin-bottom: 20px;
+}
+
+.contactHero p {
+  font-size: 17px;
+  color: var(--stone-d);
+  line-height: 1.6;
+}
+
+.contactGrid {
+  padding: 40px 0 100px;
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 80px;
+}
+
+.contactInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.infoItem h5 {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--stone-d);
+  margin-bottom: 12px;
+  font-family: var(--font-space-grotesk);
+}
+
+.infoItem p {
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.form {
+  background: var(--paper);
+  padding: 44px;
+  border-radius: 18px;
+  border: 1px solid var(--line);
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.field {
+  margin-bottom: 24px;
+}
+
+.field label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.field input, .field select, .field textarea {
+  width: 100%;
+  padding: 14px 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  background: var(--paper2);
+}
+
+.field input:focus, .field select:focus, .field textarea:focus {
+  border-color: var(--stone);
+  background: #fff;
+}
+
+@media (max-width: 768px) {
+  .contactGrid {
+    grid-template-columns: 1fr;
+    gap: 60px;
+  }
+  .form {
+    padding: 24px;
+  }
+  .formRow {
+    grid-template-columns: 1fr;
+  }
+}

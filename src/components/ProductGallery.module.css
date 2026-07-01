@@ -1,0 +1,52 @@
+.galleryMain {
+  aspect-ratio: 1/1.05;
+  border-radius: 14px;
+  background: radial-gradient(circle at 35% 25%, #efe9dd, #d4cbb8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+  position: relative;
+  overflow: hidden;
+}
+
+.mainImg {
+  object-fit: contain;
+  padding: 20px;
+  transition: opacity 0.3s ease;
+}
+
+.zoomTag {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  background: rgba(250, 248, 244, 0.9);
+  font-size: 11.5px;
+  padding: 6px 12px;
+  border-radius: 100px;
+  font-weight: 600;
+  z-index: 2;
+}
+
+.thumbRow {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 5px;
+}
+
+.thumb {
+  width: 74px;
+  height: 74px;
+  border-radius: 8px;
+  background: #e7e1d3;
+  border: 2px solid transparent;
+  flex-shrink: 0;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.thumb.active {
+  border-color: var(--copper);
+}

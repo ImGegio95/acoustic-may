@@ -1,0 +1,284 @@
+.breadcrumb {
+  padding: 18px 0;
+  font-size: 12.5px;
+  color: var(--stone-d);
+}
+
+.pdp {
+  padding: 28px 0 100px;
+  display: grid;
+  grid-template-columns: 1fr 0.85fr;
+  gap: 60px;
+}
+
+.galleryMain {
+  aspect-ratio: 1/1.05;
+  border-radius: 14px;
+  background: radial-gradient(circle at 35% 25%, #efe9dd, #d4cbb8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+  position: relative;
+  overflow: hidden;
+}
+
+.mainImg {
+  object-fit: contain;
+  padding: 20px;
+}
+
+.speaker {
+  width: 36%;
+  aspect-ratio: 0.55/1;
+  background: linear-gradient(160deg,#3b342a,#181712);
+  border-radius: 8px;
+  position: relative;
+  box-shadow: 0 30px 50px rgba(0,0,0,0.25);
+}
+
+.speaker::before {
+  content:'';
+  position: absolute;
+  left: 50%;
+  top: 18%;
+  transform: translateX(-50%);
+  width: 64%;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%,#5a4d3c,#100f0c);
+  box-shadow: inset 0 0 16px rgba(0,0,0,0.6);
+}
+
+.speaker::after {
+  content:'';
+  position: absolute;
+  left: 50%;
+  top: 58%;
+  transform: translateX(-50%);
+  width: 48%;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%,#4d4232,#0e0d0a);
+  box-shadow: inset 0 0 12px rgba(0,0,0,0.6);
+}
+
+.zoomTag {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  background: rgba(250, 248, 244, 0.9);
+  font-size: 11.5px;
+  padding: 6px 12px;
+  border-radius: 100px;
+  font-weight: 600;
+}
+
+.thumbRow {
+  display: flex;
+  gap: 10px;
+}
+
+.thumb {
+  width: 74px;
+  height: 74px;
+  border-radius: 8px;
+  background: #e7e1d3;
+  border: 2px solid transparent;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.thumb.active {
+  border-color: var(--copper);
+}
+
+.pdpInfo h1 {
+  font-size: clamp(24px, 2.6vw, 32px);
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.pCat {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--stone-d);
+  margin-bottom: 10px;
+}
+
+.pdpStars {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  color: var(--stone-d);
+}
+
+.stars {
+  color: var(--copper);
+  letter-spacing: 2px;
+}
+
+.pdpPrice {
+  font-family: var(--font-jetbrains-mono);
+  font-size: 28px;
+  font-weight: 500;
+}
+
+.stock {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12.5px;
+  color: #3a7d44;
+  margin-bottom: 26px;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #3a7d44;
+}
+
+.pdpDesc {
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--stone-d);
+  margin-bottom: 28px;
+}
+
+.optGroup {
+  margin-bottom: 24px;
+}
+
+.optGroup h5 {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 12px;
+  color: var(--stone-d);
+  font-family: var(--font-space-grotesk);
+}
+
+.swatches {
+  display: flex;
+  gap: 10px;
+}
+
+.swatch {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+
+.swatch.active {
+  border-color: var(--ink);
+}
+
+.qtyRow {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.qtyBox {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  overflow: hidden;
+}
+
+.qtyBox button {
+  width: 38px;
+  height: 44px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.qtyBox span {
+  width: 34px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.pdpCta {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.iconSquare {
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: pointer;
+  color: var(--ink);
+}
+
+.infoLinkRow {
+  display: flex;
+  flex-direction: column;
+  margin-top: 24px;
+  border-top: 1px solid var(--line);
+}
+
+.accordionItem {
+  border-bottom: 1px solid var(--line);
+}
+
+.accordionHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.accordionBody {
+  font-size: 13px;
+  color: var(--stone-d);
+  line-height: 1.6;
+  padding-bottom: 16px;
+  display: none;
+}
+
+.accordionItem.open .accordionBody {
+  display: block;
+}
+
+.specTable {
+  width: 100%;
+  font-family: var(--font-jetbrains-mono);
+  font-size: 12.5px;
+}
+
+.specTable td {
+  padding: 9px 0;
+  color: var(--stone-d);
+}
+
+.specTable td:first-child {
+  color: var(--ink);
+  width: 46%;
+}
+
+@media (max-width: 768px) {
+  .pdp {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+}
