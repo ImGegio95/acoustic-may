@@ -7,9 +7,7 @@ import styles from "@/app/admin/page.module.css";
 import { getEmailTemplates, updateEmailTemplate } from "@/lib/orders-actions";
 import { getSetting, updateSetting } from "@/lib/db-actions";
 import dynamic from "next/dynamic";
-import "react-quill-new/dist/quill.snow.css";
-
-const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false, loading: () => <p>Caricamento editor...</p> });
+const TiptapEditor = dynamic(() => import("@/components/TiptapEditor"), { ssr: false, loading: () => <div style={{ height: '200px', background: 'var(--paper2)', borderRadius: '12px' }}></div> });
 
 export default function AdminEmailPage() {
   const [templates, setTemplates] = useState<any[]>([]);
@@ -43,8 +41,8 @@ export default function AdminEmailPage() {
       const footer = await getSetting("email_footer");
       
       // Default modern layout if empty
-      setGlobalHeader(header || "<div style=\"font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #eaeaea; border-radius: 8px; overflow: hidden;\"><div style=\"background: #121212; padding: 24px; text-align: center; color: white;\"><h2>Acoustic May</h2></div><div style=\"padding: 32px; background: #faf8f4;\">");
-      setGlobalFooter(footer || "</div><div style=\"background: #f4f2ee; padding: 24px; text-align: center; font-size: 12px; color: #7a7468;\"><p>Acoustic May - Via Roma 1, Milano</p><p><a href=\"https://www.acousticmay.it\" style=\"color: #121212;\">Visita il sito</a></p></div></div>");
+      setGlobalHeader(header || "<div style=\"font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #eaeaea; border-radius: 8px; overflow: hidden;\"><div style=\"background: #121212; padding: 32px 24px; text-align: center;\"><img src=\"https://www.acousticmay.it/logo.png\" alt=\"Acoustic May\" style=\"max-width: 180px; height: auto;\" /></div><div style=\"padding: 32px 24px; background: #faf8f4; color: #121212;\">");
+      setGlobalFooter(footer || "</div><div style=\"background: #f4f2ee; padding: 24px; text-align: center; font-size: 12px; color: #7a7468; line-height: 1.6;\"><p><strong>Acoustic May</strong><br/>Via [Indirizzo], [Città] ([PROV]) [CAP]<br/>P.IVA: [Tua Partita IVA]<br/><a href=\"https://www.acousticmay.it\" style=\"color: #121212; text-decoration: underline;\">www.acousticmay.it</a></p></div></div>");
       
       setLoaded(true);
     }
@@ -132,23 +130,10 @@ export default function AdminEmailPage() {
 
                 <div className={styles.field} style={{ marginBottom: '24px' }}>
                   <label>Corpo dell'Email</label>
-                  <div style={{ background: 'white', borderRadius: '10px', overflow: 'hidden' }}>
-                    <ReactQuill 
-                      theme="snow" 
-                      value={bodyHtml} 
-                      onChange={setBodyHtml}
-                      style={{ height: '300px', border: 'none' }}
-                      modules={{
-                        toolbar: [
-                          [{ 'header': [1, 2, 3, false] }],
-                          ['bold', 'italic', 'underline', 'strike'],
-                          [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                          ['link', 'clean']
-                        ]
-                      }}
-                    />
-                  </div>
-                  <div style={{ height: '42px' }}></div>
+                  <TiptapEditor 
+                    value={bodyHtml} 
+                    onChange={setBodyHtml}
+                  />
                 </div>
 
                 <button type="submit" className="btn btn-dark" disabled={saving}>
@@ -165,22 +150,10 @@ export default function AdminEmailPage() {
                     Si consiglia di inserire tag strutturali se si è esperti, altrimenti usate l'editor visivo. 
                     Ricordatevi che questo contenuto andrà <strong>SOPRA</strong> al corpo dell'email.
                   </p>
-                  <div style={{ background: 'white', borderRadius: '10px', overflow: 'hidden' }}>
-                    <ReactQuill 
-                      theme="snow" 
-                      value={globalHeader} 
-                      onChange={setGlobalHeader}
-                      style={{ height: '150px', border: 'none' }}
-                      modules={{
-                        toolbar: [
-                          [{ 'header': [1, 2, 3, false] }],
-                          ['bold', 'italic', 'underline'],
-                          ['link', 'image', 'clean']
-                        ]
-                      }}
-                    />
-                  </div>
-                  <div style={{ height: '42px' }}></div>
+                  <TiptapEditor 
+                    value={globalHeader} 
+                    onChange={setGlobalHeader}
+                  />
                 </div>
 
                 <div className={styles.field} style={{ marginBottom: '24px' }}>
@@ -188,21 +161,10 @@ export default function AdminEmailPage() {
                   <p style={{ fontSize: '12px', color: 'var(--stone-d)', marginBottom: '8px' }}>
                     Questo contenuto andrà <strong>SOTTO</strong> al corpo dell'email (es. Indirizzo, Copyright, Social).
                   </p>
-                  <div style={{ background: 'white', borderRadius: '10px', overflow: 'hidden' }}>
-                    <ReactQuill 
-                      theme="snow" 
-                      value={globalFooter} 
-                      onChange={setGlobalFooter}
-                      style={{ height: '150px', border: 'none' }}
-                      modules={{
-                        toolbar: [
-                          ['bold', 'italic', 'underline'],
-                          ['link', 'image', 'clean']
-                        ]
-                      }}
-                    />
-                  </div>
-                  <div style={{ height: '42px' }}></div>
+                  <TiptapEditor 
+                    value={globalFooter} 
+                    onChange={setGlobalFooter}
+                  />
                 </div>
 
                 <button type="submit" className="btn btn-dark" disabled={saving}>

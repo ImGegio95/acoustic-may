@@ -113,3 +113,30 @@ button {
 .btn-outline:hover {
   border-color: var(--ink);
 }
+
+/* Tiptap Editor Styles */
+.tiptap-editor-content {
+  outline: none;
+}
+.tiptap-editor-content p {
+  margin-bottom: 12px;
+}
+.tiptap-editor-content p:last-child {
+  margin-bottom: 0;
+}
+.tiptap-editor-content ul, .tiptap-editor-content ol {
+  padding-left: 24px;
+  margin-bottom: 12px;
+}
+.tiptap-editor-content h1 {
+  font-size: 24px;
+  margin: 24px 0 12px 0;
+}
+.tiptap-editor-content h2 {
+  font-size: 20px;
+  margin: 20px 0 12px 0;
+}
+.tiptap-editor-content a {
+  color: var(--copper);
+  text-decoration: underline;
+}

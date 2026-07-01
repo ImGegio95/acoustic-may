@@ -5,9 +5,7 @@ import { X, Plus, Trash2 } from "lucide-react";
 import styles from "@/app/admin/page.module.css";
 import { createProduct, updateProduct } from "@/lib/db-actions";
 import dynamic from "next/dynamic";
-import "react-quill-new/dist/quill.snow.css";
-
-const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false, loading: () => <p style={{ padding: '16px', color: 'var(--stone)' }}>Caricamento editor...</p> });
+const TiptapEditor = dynamic(() => import("./TiptapEditor"), { ssr: false, loading: () => <div style={{ height: '200px', background: 'var(--paper2)', borderRadius: '12px' }}></div> });
 
 export default function AdminProductModal({ product, categories, attributes, onClose }: { product?: any, categories: any[], attributes: any[], onClose: () => void }) {
   const [loading, setLoading] = useState(false);
@@ -188,25 +186,11 @@ export default function AdminProductModal({ product, categories, attributes, onC
           </div>
 
           <div className={styles.field}>
-            <label>Descrizione</label>
-            <div style={{ background: 'white', borderRadius: '10px', overflow: 'hidden' }}>
-              <ReactQuill 
-                theme="snow" 
-                value={formData.description} 
-                onChange={val => setFormData({...formData, description: val})}
-                style={{ height: '250px', border: 'none' }}
-                modules={{
-                  toolbar: [
-                    [{ 'header': [1, 2, 3, false] }],
-                    ['bold', 'italic', 'underline', 'strike'],
-                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                    ['link', 'clean']
-                  ]
-                }}
-              />
-            </div>
-            {/* Fix space for toolbar absolute positioning if needed, or just let CSS handle it. ReactQuill uses inline block toolbar. */}
-            <div style={{ height: '42px' }}></div>
+            <label>Descrizione (Editor Premium)</label>
+            <TiptapEditor 
+              value={formData.description} 
+              onChange={val => setFormData({...formData, description: val})}
+            />
           </div>
 
           <hr className={styles.hr} />
