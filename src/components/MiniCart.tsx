@@ -18,6 +18,8 @@ export default function MiniCart() {
 
   if (!mounted) return null;
 
+  console.log("MiniCart rendering, isOpen:", isOpen);
+
   return (
     <>
       {/* Overlay */}

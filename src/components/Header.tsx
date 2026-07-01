@@ -12,6 +12,11 @@ export default function Header() {
   const { toggleCart, items } = useCartStore();
   const [mounted, setMounted] = useState(false);
 
+  const handleCartClick = () => {
+    console.log("Cart clicked, toggling...");
+    toggleCart();
+  };
+
   useEffect(() => {
     setMounted(true);
     const handleScroll = () => {
@@ -52,7 +57,7 @@ export default function Header() {
           <Link href="#" className={styles.iconBtn} aria-label="Preferiti">
             <Heart size={20} strokeWidth={1.5} />
           </Link>
-          <button className={styles.iconBtn} onClick={toggleCart} aria-label="Carrello">
+          <button className={styles.iconBtn} onClick={handleCartClick} aria-label="Carrello">
             <ShoppingBag size={20} strokeWidth={1.5} />
             {mounted && cartCount > 0 && (
               <span className={styles.cartDot}>{cartCount}</span>
