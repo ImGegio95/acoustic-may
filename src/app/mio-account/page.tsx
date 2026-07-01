@@ -1,29 +1,72 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import styles from "./page.module.css";
 
 export default function AccountPage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen pt-40 pb-24 bg-paper">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <div className="w-20 h-20 bg-paper2 rounded-full flex items-center justify-center mx-auto mb-8 text-3xl">👤</div>
-          <h1 className="text-4xl font-bold mb-6">Area Cliente</h1>
-          <p className="text-xl text-stone-dark mb-12">
-            Stiamo preparando la tua area personale per permetterti di gestire ordini, 
-            preferiti e assistenza in un unico posto.
-          </p>
-          
-          <div className="grid md:grid-cols-2 gap-8 text-left">
-            <div className="p-8 bg-white rounded-2xl border border-line">
-              <h3 className="font-bold mb-4">I tuoi ordini</h3>
-              <p className="text-sm text-stone-dark mb-6">Visualizza lo stato delle tue spedizioni e lo storico acquisti.</p>
-              <span className="text-xs font-bold text-stone tracking-widest uppercase">Disponibile a breve</span>
+      <main className={styles.accountPage}>
+        <div className={styles.heroBg}>
+          <div className={styles.circle1}></div>
+          <div className={styles.circle2}></div>
+        </div>
+
+        <div className={styles.container}>
+          <div className={styles.loginCard}>
+            <div className={styles.cardHeader}>
+              <h1>Bentornato</h1>
+              <p>Accedi alla tua area riservata Acoustic May</p>
             </div>
-            <div className="p-8 bg-white rounded-2xl border border-line">
-              <h3 className="font-bold mb-4">Assistenza Premium</h3>
-              <p className="text-sm text-stone-dark mb-6">Apri un ticket o richiedi assistenza diretta per i tuoi prodotti.</p>
-              <span className="text-xs font-bold text-stone tracking-widest uppercase">Disponibile a breve</span>
+
+            <form className={styles.form}>
+              <div className={styles.inputGroup}>
+                <label htmlFor="email">Email</label>
+                <input type="email" id="email" placeholder="latua@email.it" />
+              </div>
+              <div className={styles.inputGroup}>
+                <label htmlFor="password">Password</label>
+                <input type="password" id="password" placeholder="••••••••" />
+                <a href="#" className={styles.forgot}>Password dimenticata?</a>
+              </div>
+
+              <button type="button" className="btn btn-primary w-full">Accedi ora</button>
+            </form>
+
+            <div className={styles.divider}>
+              <span>oppure</span>
+            </div>
+
+            <div className={styles.registerPrompt}>
+              <p>Non hai ancora un account?</p>
+              <button type="button" className="btn btn-ghost w-full">Crea un account artigiano</button>
+            </div>
+          </div>
+
+          <div className={styles.benefits}>
+            <h3>Perché registrarsi?</h3>
+            <div className={styles.benefitList}>
+              <div className={styles.benefitItem}>
+                <div className={styles.icon}>📦</div>
+                <div>
+                  <h4>Traccia i tuoi ordini</h4>
+                  <p>Segui ogni fase della creazione e spedizione del tuo diffusore.</p>
+                </div>
+              </div>
+              <div className={styles.benefitItem}>
+                <div className={styles.icon}>🛠️</div>
+                <div>
+                  <h4>Assistenza Prioritaria</h4>
+                  <p>Canale diretto con il laboratorio per manutenzione e consigli.</p>
+                </div>
+              </div>
+              <div className={styles.benefitItem}>
+                <div className={styles.icon}>✨</div>
+                <div>
+                  <h4>Anteprime Esclusive</h4>
+                  <p>Accesso anticipato alle nuove serie limitate e prototipi.</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
