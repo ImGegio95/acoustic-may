@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import styles from "./Header.module.css";
 import { useCartStore } from "@/lib/store";
-import { Search, Heart, ShoppingBag } from "lucide-react";
+import { Search, Heart, ShoppingBag, User } from "lucide-react";
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -51,6 +51,9 @@ export default function Header() {
           </nav>
         </div>
         <div className={styles.headerIcons}>
+          <Link href="/mio-account" className={styles.iconBtn} aria-label="Account">
+            <User size={20} strokeWidth={1.5} />
+          </Link>
           <Link href="/catalogo" className={styles.iconBtn} aria-label="Cerca">
             <Search size={20} strokeWidth={1.5} />
           </Link>
