@@ -1,14 +1,17 @@
 import Link from "next/link";
-import { Package, Mail, ShoppingBag, Users, Truck, FolderTree } from "lucide-react";
+import { Package, Mail, ShoppingBag, Users, Truck, FolderTree, Megaphone } from "lucide-react";
 
 export default function AdminNav() {
   return (
-    <div style={{ display: 'flex', gap: '16px', marginBottom: '32px', overflowX: 'auto', paddingBottom: '8px' }}>
+    <nav className="admin-nav" style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '16px', marginBottom: '24px' }}>
       <Link href="/admin" className="btn btn-outline" style={{ background: 'white', whiteSpace: 'nowrap' }}>
         <Package size={16} /> Catalogo & Prodotti
       </Link>
       <Link href="/admin/categorie" className="btn btn-outline" style={{ background: 'white', whiteSpace: 'nowrap' }}>
         <FolderTree size={16} /> Categorie
+      </Link>
+      <Link href="/admin/annunci" className="btn btn-outline" style={{ background: 'white', whiteSpace: 'nowrap' }}>
+        <Megaphone size={16} /> Avvisi (Barra)
       </Link>
       <Link href="/admin/ordini" className="btn btn-outline" style={{ background: 'white', whiteSpace: 'nowrap' }}>
         <ShoppingBag size={16} /> Gestione Ordini
@@ -22,6 +25,6 @@ export default function AdminNav() {
       <Link href="/admin/clienti" className="btn btn-outline" style={{ background: 'white', whiteSpace: 'nowrap' }}>
         <Users size={16} /> Rubrica Clienti
       </Link>
-    </div>
+    </nav>
   );
 }

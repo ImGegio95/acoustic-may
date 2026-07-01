@@ -221,3 +221,10 @@ export const orderItemsRelations = relations(orderItems, ({ one }) => ({
     references: [productVariants.id],
   }),
 }));
+
+export const announcements = mysqlTable("announcements", {
+  id: serial("id").primaryKey(),
+  text: text("text").notNull(),
+  isActive: boolean("is_active").default(true),
+  sortOrder: bigint("sort_order", { mode: "number" }).default(0),
+});

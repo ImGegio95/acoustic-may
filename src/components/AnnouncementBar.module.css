@@ -1,0 +1,47 @@
+.announcementBar {
+  background: var(--ink);
+  color: var(--paper);
+  height: 36px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  z-index: 1000;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.marquee {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.track {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: scroll 30s linear infinite;
+}
+
+.track:hover {
+  animation-play-state: paused;
+}
+
+.message {
+  display: inline-block;
+  padding: 0 60px;
+  position: relative;
+}
+
+.message::after {
+  content: '•';
+  position: absolute;
+  right: 25px;
+  opacity: 0.3;
+}
+
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}

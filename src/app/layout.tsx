@@ -3,6 +3,10 @@ import { Inter, Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import MiniCart from "@/components/MiniCart";
 import GoogleTagManager from "@/components/GoogleTagManager";
+import AnnouncementBar from "@/components/AnnouncementBar";
+import { db } from "@/db";
+import { announcements } from "@/db/schema";
+import { eq, asc } from "drizzle-orm";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -36,15 +40,21 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const activeAnnouncements = await db.select()
+    .from(announcements)
+    .where(eq(announcements.isActive, true))
+    .orderBy(asc(announcements.sortOrder));
+
   return (
     <html lang="it">
       <body className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`}>
         <GoogleTagManager />
+        <AnnouncementBar messages={activeAnnouncements} />
         {children}
         <MiniCart />
       </body>
