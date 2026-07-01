@@ -50,7 +50,6 @@ export default function AboutPage() {
                    src="/products/radice-hero.webp" 
                    alt="Radice Heritage" 
                    className="object-cover w-full h-full"
-                   onError={(e) => (e.currentTarget.style.display = 'none')}
                  />
                  <div className={styles.overlayText}>
                    [Immagine Artigianato Salentino]

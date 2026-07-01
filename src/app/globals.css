@@ -1,3 +1,17 @@
+:root {
+  --ink: #121212;
+  --paper: #FAF8F4;
+  --paper2: #F4F2EE;
+  --copper: #BD5B2C;
+  --copper-d: #A64E24;
+  --stone: #A39B8B;
+  --stone-d: #7A7468;
+  --stone-dark: #4A463F;
+  --line: rgba(18, 18, 18, 0.08);
+  --shadow: 0 12px 34px -10px rgba(18, 18, 18, 0.12);
+  --radius: 12px;
+}
+
 body {
   font-family: var(--font-inter), sans-serif;
   background: var(--paper2);
