@@ -1,0 +1,7 @@
+.main {
+  min-height: 100vh;
+  background-color: var(--paper);
+}
+
+/* Empty for now as I used utility-like classes in the TSX, 
+   but good to have the file for future specific styling */

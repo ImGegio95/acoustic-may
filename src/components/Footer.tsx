@@ -37,10 +37,10 @@ export default function Footer() {
         </div>
         <div className={styles.footCol}>
           <h5>Assistenza</h5>
-          <Link href="/faq">Domande frequenti</Link>
+          <Link href="/assistenza">Domande frequenti</Link>
           <Link href="/assistenza">Assistenza tecnica</Link>
           <Link href="/contatti">Contatti</Link>
-          <Link href="/manuali">Manuali e download</Link>
+          <Link href="/assistenza">Manuali e download</Link>
         </div>
         <div className={`${styles.footCol} ${styles.newsletter}`}>
           <h5>Resta in ascolto</h5>

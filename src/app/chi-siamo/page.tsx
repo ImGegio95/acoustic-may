@@ -6,55 +6,94 @@ export default function AboutPage() {
   return (
     <>
       <Header />
-      <main className="container">
+      <main className={styles.main}>
+        {/* Hero Section */}
         <section className={styles.aboutHero}>
           <div className={styles.heroContent}>
-            <div className={styles.tag}>La nostra storia</div>
-            <h1>Dove il legno incontra l'acustica.</h1>
-            <p>Acoustic May nasce a Squinzano, nel cuore del Salento, dalla passione per il suono puro e la maestria artigianale pugliese.</p>
+            <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight">
+              Il suono nasce <br />
+              <span className="text-copper">dalle mani.</span>
+            </h1>
+            <p className="text-xl text-stone-dark leading-relaxed mb-12">
+              Acoustic May produce diffusori acustici artigianali a Squinzano (LE). 
+              Il nostro valore distintivo è la produzione 100% interna — dal legno al collaudo acustico — 
+              e la possibilità di personalizzare forme e finiture su richiesta.
+            </p>
           </div>
         </section>
 
-        <section className={styles.contentSection}>
-          <div className={styles.imageGrid}>
-            <div className={styles.mainImg}>
-              {/* Image from Radice production could go here */}
+        {/* Heritage Story - The "Radice" Connection */}
+        <section className={styles.heritageSection}>
+          <div className={styles.container}>
+            <div className={styles.grid2}>
+              <div>
+                <h2 className="text-3xl font-bold mb-6">Le nostre Radici</h2>
+                <div className="space-y-4 text-stone-dark leading-relaxed">
+                  <p>
+                    Quando fai un viaggio nel <strong>Salento</strong>, ma al posto delle folte campagne di alberi di ulivo 
+                    trovi semplicemente delle distese di terra desolate, ti piange il cuore.
+                  </p>
+                  <p>
+                    Purtroppo, da qualche anno la <strong>Xylella</strong> ha colpito la maggior parte delle coltivazioni 
+                    portate avanti negli anni da tantissimi agricoltori. Questo ha portato ad un inevitabile decadimento 
+                    delle colture ed ha dato vita ad uno scenario di alberi ormai secchi.
+                  </p>
+                  <p>
+                    Nella maggior parte dei casi, gli agricoltori hanno preferito tirare via i vecchi alberi 
+                    <strong> estirpandone la radice</strong> per poter piantare nuove colture. Da questa resilienza 
+                    e dal legame profondo con il territorio nasce la nostra ispirazione.
+                  </p>
+                </div>
+              </div>
+              <div className={styles.imagePlaceholder}>
+                 <img 
+                   src="/products/radice-hero.webp" 
+                   alt="Radice Heritage" 
+                   className="object-cover w-full h-full"
+                   onError={(e) => (e.currentTarget.style.display = 'none')}
+                 />
+                 <div className={styles.overlayText}>
+                   [Immagine Artigianato Salentino]
+                 </div>
+              </div>
             </div>
-            <div className={styles.sideImgs}>
-              <div className={styles.sideImg}></div>
-              <div className={styles.sideImg}></div>
-            </div>
-          </div>
-          
-          <div className={styles.textBlock}>
-            <h2>Artigianato 100% Salentino</h2>
-            <p>Acoustic May è una realtà artigianale di Squinzano (LE) che fonde la tradizione del legno con l'innovazione acustica. Il nostro valore distintivo è la <strong>produzione 100% interna</strong>: dal taglio del legno (multistrato di betulla, pioppo, MDF) all'assemblaggio dei componenti, fino al collaudo acustico finale.</p>
-            
-            <div className={styles.storyHighlight}>
-              <h3>Il Progetto Radice</h3>
-              <p>Nato dal cuore del nostro territorio, il progetto Radice è la nostra risposta alla Xylella che ha colpito gli ulivi del Salento. Recuperiamo le radici degli alberi estirpati per trasformarle in diffusori Hi-Fi unici, dando nuova vita a un legno che racchiude secoli di storia.</p>
-            </div>
-
-            <p>Non costruiamo solo diffusori; creiamo pezzi unici che raccontano il territorio attraverso il suono. Ogni prodotto è testato man mano per garantire una qualità che il mondo industriale non potrà mai replicare.</p>
           </div>
         </section>
 
-        <section className={styles.valuesSection}>
-          <div className={styles.value}>
-            <div className={styles.n}>01</div>
-            <h3>Precisione Tecnica</h3>
-            <p>Non siamo solo falegnami. Ogni cabinet è studiato per eliminare risonanze indesiderate e massimizzare le prestazioni degli altoparlanti.</p>
+        {/* Brand Pillars */}
+        <section className={styles.pillarsSection}>
+          <div className={styles.pillar}>
+            <div className="text-copper font-mono text-sm mb-4">01 / ARTIGIANALITÀ</div>
+            <h3 className="text-xl font-bold mb-4">Realizzati a mano</h3>
+            <p className="text-stone-dark leading-relaxed">
+              Ogni cabinet è progettato e assemblato internamente, con la cura di chi conosce ogni vite del proprio prodotto.
+            </p>
           </div>
-          <div className={styles.value}>
-            <div className={styles.n}>02</div>
-            <h3>Personalizzazione</h3>
-            <p>Crediamo che ogni ambiente meriti un suono specifico. Offriamo finiture su misura per integrare i nostri diffusori nel tuo spazio.</p>
+          <div className={styles.pillar}>
+            <div className="text-copper font-mono text-sm mb-4">02 / MATERIALI</div>
+            <h3 className="text-xl font-bold mb-4">Legno Premium</h3>
+            <p className="text-stone-dark leading-relaxed">
+              Multistrato di betulla, pioppo e MDF selezionati: la qualità si sente prima ancora di accendere l'impianto.
+            </p>
           </div>
-          <div className={styles.value}>
-            <div className={styles.n}>03</div>
-            <h3>Passione Reale</h3>
-            <p>Costruiamo ogni pezzo come se dovesse suonare in casa nostra. La musica è emozione, e noi vogliamo onorarla.</p>
+          <div className={styles.pillar}>
+            <div className="text-copper font-mono text-sm mb-4">03 / COMPETENZA</div>
+            <h3 className="text-xl font-bold mb-4">Collaudo Reale</h3>
+            <p className="text-stone-dark leading-relaxed">
+              Ogni diffusore viene testato individualmente per garantire una risposta in frequenza lineare e un sound perfetto.
+            </p>
           </div>
+        </section>
+
+        {/* CTA */}
+        <section className={styles.ctaSection}>
+          <h2 className="text-3xl font-bold mb-6">Vuoi saperne di più?</h2>
+          <p className="text-stone-dark mb-10 max-w-2xl mx-auto">
+            Siamo a tua disposizione per spiegarti il nostro processo costruttivo o per progettare insieme i tuoi nuovi diffusori.
+          </p>
+          <a href="/contatti" className="btn-dark">
+            Contattaci
+          </a>
         </section>
       </main>
       <Footer />
