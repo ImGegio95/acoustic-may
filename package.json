@@ -6,7 +6,8 @@
     "dev": "next dev -p 3022",
     "build": "next build",
     "start": "next start -p 3022",
-    "lint": "eslint"
+    "lint": "eslint",
+    "update-data": "npx tsx src/db/update-data.ts"
   },
   "dependencies": {
     "dotenv": "^17.4.2",
