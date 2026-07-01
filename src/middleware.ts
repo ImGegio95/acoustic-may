@@ -4,27 +4,26 @@ import type { NextRequest } from "next/server";
 
 export default async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  const session = await auth();
+  const isLoggedIn = !!session?.user;
 
-  // 1. Check Maintenance Mode (skip for admin, api and static files)
+  // 1. Check Maintenance Mode (skip for admin, api, login and static files)
   if (!pathname.startsWith("/admin") && 
       !pathname.startsWith("/api") && 
       !pathname.startsWith("/_next") &&
       pathname !== "/manutenzione" &&
+      pathname !== "/mio-account" &&
       !pathname.includes(".")) {
     
     try {
       // Fetch maintenance status from our internal API
       const baseUrl = request.nextUrl.origin;
       const res = await fetch(`${baseUrl}/api/maintenance`, { next: { revalidate: 0 } });
-      const { enabled, allowedIps } = await res.json();
+      const { enabled } = await res.json();
 
-      if (enabled) {
-        const clientIp = (request as any).ip || request.headers.get("x-forwarded-for")?.split(",")[0] || "";
-        const isAllowed = allowedIps.includes(clientIp) || clientIp === "127.0.0.1" || clientIp === "::1";
-
-        if (!isAllowed) {
-          return NextResponse.redirect(new URL("/manutenzione", request.url));
-        }
+      // IF maintenance is ON and user is NOT logged in -> redirect to maintenance
+      if (enabled && !isLoggedIn) {
+        return NextResponse.redirect(new URL("/manutenzione", request.url));
       }
     } catch (e) {
       console.error("Maintenance check failed", e);
@@ -32,10 +31,7 @@ export default async function middleware(request: NextRequest) {
   }
 
   // 2. Auth Protection for /admin
-  const session = await auth();
-  const isLoggedIn = !!session?.user;
   const isOnAdmin = pathname.startsWith("/admin");
-
   if (isOnAdmin && !isLoggedIn) {
     return NextResponse.redirect(new URL("/mio-account", request.url));
   }

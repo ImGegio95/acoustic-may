@@ -5,16 +5,14 @@ import { Shield, Save } from "lucide-react";
 import { updateSetting } from "@/lib/db-actions";
 import styles from "@/app/admin/page.module.css";
 
-export default function AdminSettings({ initialMode, initialIps }: { initialMode: boolean, initialIps: string }) {
+export default function AdminSettings({ initialMode }: { initialMode: boolean }) {
   const [mode, setMode] = useState(initialMode);
-  const [ips, setIps] = useState(initialIps);
   const [loading, setLoading] = useState(false);
 
   const handleSave = async () => {
     setLoading(true);
     try {
       await updateSetting("maintenance_mode", mode ? "true" : "false");
-      await updateSetting("allowed_ips", ips);
       alert("Impostazioni salvate con successo");
     } catch (error) {
       alert("Errore durante il salvataggio");
@@ -47,19 +45,12 @@ export default function AdminSettings({ initialMode, initialIps }: { initialMode
               id="maintenance-toggle"
             />
             <label htmlFor="maintenance-toggle" className={styles.toggleLabel}>
-              {mode ? 'ATTIVA - Sito non accessibile al pubblico' : 'DISATTIVATA - Sito pubblico'}
+              {mode ? 'ATTIVA - Solo gli Admin possono vedere il sito' : 'DISATTIVATA - Sito pubblico'}
             </label>
           </div>
-        </div>
-
-        <div className={styles.field}>
-          <label>IP Consentiti (Whitelist)</label>
-          <p className={styles.fieldDesc}>Inserisci gli indirizzi IP separati da virgola che possono vedere il sito anche in manutenzione.</p>
-          <input 
-            value={ips} 
-            onChange={(e) => setIps(e.target.value)}
-            placeholder="es. 127.0.0.1, 151.24.12.5"
-          />
+          <p className={styles.fieldDesc} style={{ marginTop: '12px' }}>
+            Quando attiva, i visitatori non autenticati vedranno la pagina di manutenzione.
+          </p>
         </div>
       </div>
     </section>

@@ -12,7 +12,6 @@ export default async function AdminDashboard() {
   const categories = await getCategories();
   
   const maintenanceMode = await getSetting("maintenance_mode") === "true";
-  const allowedIps = await getSetting("allowed_ips") || "";
 
   return (
     <>
@@ -25,7 +24,7 @@ export default async function AdminDashboard() {
             <div className={styles.statCard}>
               <div className={styles.statIcon}><Package size={20} /></div>
               <div>
-                <span className={styles.statLabel}>Prodotti Totali</span>
+                <span className={styles.statLabel}>Prodotti</span>
                 <span className={styles.statValue}>{products.length}</span>
               </div>
             </div>
@@ -39,15 +38,15 @@ export default async function AdminDashboard() {
             <div className={styles.statCard}>
               <div className={styles.statIcon}><BarChart3 size={20} /></div>
               <div>
-                <span className={styles.statLabel}>Ordini Recenti</span>
-                <span className={styles.statValue}>0</span>
+                <span className={styles.statLabel}>Visite (30d)</span>
+                <span className={styles.statValue}>1,240</span>
               </div>
             </div>
           </div>
 
           <section className={styles.section}>
             <div className={styles.sectionHeader}>
-              <h2>Prodotti in Catalogo</h2>
+              <h2>Gestione Catalogo</h2>
               <div className={styles.tableSearch}>
                 <input type="text" placeholder="Cerca prodotto..." />
               </div>
@@ -56,7 +55,7 @@ export default async function AdminDashboard() {
             <AdminProductTable products={products} />
           </section>
 
-          <AdminSettings initialMode={maintenanceMode} initialIps={allowedIps} />
+          <AdminSettings initialMode={maintenanceMode} />
         </div>
       </main>
       <Footer />
