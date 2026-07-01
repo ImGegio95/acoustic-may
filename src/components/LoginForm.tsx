@@ -23,7 +23,7 @@ export default function LoginForm() {
   };
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
+    <form className={styles.form} method="POST" onSubmit={handleSubmit}>
       {error && <div className={styles.errorMsg}>{error}</div>}
       <div className={styles.inputGroup}>
         <label htmlFor="email">Email</label>

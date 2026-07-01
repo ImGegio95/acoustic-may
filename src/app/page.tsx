@@ -88,11 +88,8 @@ export default async function Home() {
               <Link href="/catalogo?cat=garden-audio" className={styles.catCard}>
                 <div className={styles.catLabel}><small>Per l'outdoor</small><h3>Garden Audio</h3></div>
               </Link>
-              <Link href="/catalogo?cat=garden-audio" className={styles.catCard}>
-                <div className={styles.catLabel}><small>Naturalezza</small><h3>Radice</h3></div>
-              </Link>
               <Link href="/catalogo?cat=home-hifi" className={styles.catCard}>
-                <div className={styles.catLabel}><small>Home Hi-Fi</small><h3>OUD</h3></div>
+                <div className={styles.catLabel}><small>Home Hi-Fi</small><h3>OUD & Radice</h3></div>
               </Link>
               <Link href="/catalogo?cat=accessori" className={styles.catCard}>
                 <div className={styles.catLabel}><small>Cura il tuo impianto</small><h3>Accessori</h3></div>
@@ -147,39 +144,6 @@ export default async function Home() {
           </div>
         </section>
 
-        <section className={styles.section}>
-          <div className="container">
-            <div className={styles.sectionHead}>
-              <div><div className={styles.tag}>Voci di chi ascolta</div><h2>Recensioni</h2></div>
-            </div>
-            <div className={styles.revRow}>
-              <div className={styles.revCard}>
-                <div className={styles.stars}>★★★★★</div>
-                <p>"Qualità costruttiva che non mi aspettavo a questo livello di prezzo. Il legno, le finiture, tutto curato."</p>
-                <div className={styles.revWho}>
-                  <div className={styles.av}>M.</div>
-                  <div><div className={styles.name}>Marco R.</div><div className={styles.role}>Studio di registrazione, Lecce</div></div>
-                </div>
-              </div>
-              <div className={styles.revCard}>
-                <div className={styles.stars}>★★★★★</div>
-                <p>"Ho richiesto una finitura personalizzata per il mio salotto: risposta rapida e risultato perfetto."</p>
-                <div className={styles.revWho}>
-                  <div className={styles.av}>G.</div>
-                  <div><div className={styles.name}>Giulia F.</div><div className={styles.role}>Cliente Home Hi-Fi</div></div>
-                </div>
-              </div>
-              <div className={styles.revCard}>
-                <div className={styles.stars}>★★★★★</div>
-                <p>"I Garden Audio hanno retto un'estate intera in giardino senza alcun problema. Suono pulito anche all'aperto."</p>
-                <div className={styles.revWho}>
-                  <div className={styles.av}>A.</div>
-                  <div><div className={styles.name}>Andrea P.</div><div className={styles.role}>Cliente Garden Audio</div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
 
         <section className={styles.section} style={{ paddingTop: 0, paddingBottom: '50px' }}>
           <div className="container">

@@ -11,31 +11,6 @@
   gap: 60px;
 }
 
-.galleryMain {
-  aspect-ratio: 1/1.05;
-  border-radius: 14px;
-  background: radial-gradient(circle at 35% 25%, #efe9dd, #d4cbb8);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 14px;
-  position: relative;
-  overflow: hidden;
-}
-
-.mainImg {
-  object-fit: contain;
-  padding: 20px;
-}
-
-.speaker {
-  width: 36%;
-  aspect-ratio: 0.55/1;
-  background: linear-gradient(160deg,#3b342a,#181712);
-  border-radius: 8px;
-  position: relative;
-  box-shadow: 0 30px 50px rgba(0,0,0,0.25);
-}
 
 .speaker::before {
   content:'';
@@ -150,34 +125,72 @@
   margin-bottom: 28px;
 }
 
-.optGroup {
-  margin-bottom: 24px;
+.variationSelector {
+  margin-bottom: 28px;
 }
 
-.optGroup h5 {
-  font-size: 12px;
+.attrLabel {
+  display: block;
+  font-size: 11px;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  margin-bottom: 12px;
+  letter-spacing: 0.1em;
   color: var(--stone-d);
-  font-family: var(--font-space-grotesk);
+  font-weight: 700;
+  margin-bottom: 12px;
 }
 
-.swatches {
+.variationGrid {
   display: flex;
-  gap: 10px;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
-.swatch {
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
-  border: 2px solid transparent;
+.variationBtn {
+  padding: 10px 20px;
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  background: none;
+  font-size: 13.5px;
+  font-weight: 500;
   cursor: pointer;
+  transition: all 0.2s;
 }
 
-.swatch.active {
+.variationBtn:hover {
+  border-color: var(--stone-d);
+}
+
+.variationBtn.active {
+  background: var(--ink);
+  color: white;
   border-color: var(--ink);
+}
+
+.colorSwatch {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid var(--line);
+  padding: 3px;
+  background: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.colorCircle {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: block;
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+.activeSwatch {
+  border-color: var(--ink);
+  transform: scale(1.1);
 }
 
 .qtyRow {

@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/db";
-import { products, categories, settings } from "@/db/schema";
+import { products, categories, settings, attributes, attrValues } from "@/db/schema";
 import { eq, desc } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
@@ -9,6 +9,19 @@ export async function getProducts() {
   return await db.query.products.findMany({
     with: {
       category: true,
+      variants: {
+        with: {
+          attributes: {
+            with: {
+              attributeValue: {
+                with: {
+                  attribute: true
+                }
+              }
+            }
+          }
+        }
+      }
     },
     orderBy: [desc(products.createdAt)],
   });
@@ -18,6 +31,36 @@ export async function getCategories() {
   return await db.query.categories.findMany({
     orderBy: [desc(categories.name)],
   });
+}
+
+export async function getAttributes() {
+  return await db.query.attributes.findMany({
+    with: {
+      values: true,
+    },
+  });
+}
+
+export async function updateAttribute(id: number, data: any) {
+  await db.update(attributes).set(data).where(eq(attributes.id, id));
+  revalidatePath("/admin");
+}
+
+export async function updateAttrValue(id: number, data: any) {
+  await db.update(attrValues).set(data).where(eq(attrValues.id, id));
+  revalidatePath("/admin");
+}
+
+export async function createAttribute(data: any) {
+  const res = await db.insert(attributes).values(data);
+  revalidatePath("/admin");
+  return res;
+}
+
+export async function createAttrValue(data: any) {
+  const res = await db.insert(attrValues).values(data);
+  revalidatePath("/admin");
+  return res;
 }
 
 export async function getLatestProducts(limit = 4) {
@@ -50,6 +93,19 @@ export async function getProductBySlug(slug: string) {
     where: eq(products.slug, slug),
     with: {
       category: true,
+      variants: {
+        with: {
+          attributes: {
+            with: {
+              attributeValue: {
+                with: {
+                  attribute: true
+                }
+              }
+            }
+          }
+        }
+      }
     },
   });
 }

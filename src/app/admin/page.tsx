@@ -1,15 +1,17 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { getProducts, getCategories, getSetting } from "@/lib/db-actions";
+import { getProducts, getCategories, getSetting, getAttributes } from "@/lib/db-actions";
 import styles from "./page.module.css";
 import { Package, Tag, BarChart3 } from "lucide-react";
 import AdminProductTable from "@/components/AdminProductTable";
 import AdminHeader from "@/components/AdminHeader";
 import AdminSettings from "@/components/AdminSettings";
+import AdminAttributes from "@/components/AdminAttributes";
 
 export default async function AdminDashboard() {
   const products = await getProducts();
   const categories = await getCategories();
+  const attributes = await getAttributes();
   
   const maintenanceMode = await getSetting("maintenance_mode") === "true";
 
@@ -20,6 +22,7 @@ export default async function AdminDashboard() {
         <div className="container">
           <AdminHeader categories={categories} />
 
+          {/* ... stats ... */}
           <div className={styles.statsGrid}>
             <div className={styles.statCard}>
               <div className={styles.statIcon}><Package size={20} /></div>
@@ -52,8 +55,10 @@ export default async function AdminDashboard() {
               </div>
             </div>
 
-            <AdminProductTable products={products} />
+            <AdminProductTable products={products} categories={categories} />
           </section>
+
+          <AdminAttributes attributes={attributes} />
 
           <AdminSettings initialMode={maintenanceMode} />
         </div>

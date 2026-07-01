@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { X, Plus, Trash2 } from "lucide-react";
 import styles from "@/app/admin/page.module.css";
 import { createProduct, updateProduct } from "@/lib/db-actions";
 
-export default function AdminProductModal({ product, categories, onClose }: { product?: any, categories: any[], onClose: () => void }) {
+export default function ProductModal({ product, categories, onClose }: { product?: any, categories: any[], onClose: () => void }) {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: product?.name || "",
@@ -136,21 +136,6 @@ export default function AdminProductModal({ product, categories, onClose }: { pr
               onChange={e => setFormData({...formData, seoDescription: e.target.value})}
             />
           </div>
-
-          {formData.type === "variable" && (
-            <>
-              <hr className={styles.hr} />
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
-                <h4>Varianti & Attributi</h4>
-                <div className={styles.tag}>In Sviluppo</div>
-              </div>
-              <p style={{ fontSize: '12px', color: 'var(--stone-d)' }}>
-                Il sistema di varianti è gestito tramite gli attributi configurati. 
-                Puoi aggiungere titoli, descrizioni e prezzi diversi per ogni variante.
-              </p>
-              {/* Variation management UI would go here */}
-            </>
-          )}
 
           <div className={styles.modalFooter}>
             <button type="button" className="btn btn-outline" onClick={onClose}>Annulla</button>

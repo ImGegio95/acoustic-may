@@ -16,17 +16,21 @@ export default async function middleware(request: NextRequest) {
       !pathname.includes(".")) {
     
     try {
-      // Fetch maintenance status from our internal API
-      const baseUrl = request.nextUrl.origin;
-      const res = await fetch(`${baseUrl}/api/maintenance`, { next: { revalidate: 0 } });
-      const { enabled } = await res.json();
-
-      // IF maintenance is ON and user is NOT logged in -> redirect to maintenance
-      if (enabled && !isLoggedIn) {
-        return NextResponse.redirect(new URL("/manutenzione", request.url));
+      const port = process.env.PORT || 3022;
+      const res = await fetch(`http://127.0.0.1:${port}/api/maintenance`, { 
+        next: { revalidate: 0 },
+        signal: AbortSignal.timeout(2000) // Don't hang the request
+      });
+      
+      if (res.ok) {
+        const { enabled } = await res.json();
+        if (enabled && !isLoggedIn) {
+          return NextResponse.redirect(new URL("/manutenzione", request.url));
+        }
       }
     } catch (e) {
-      console.error("Maintenance check failed", e);
+      // Quietly ignore maintenance fetch errors in dev or if server is busy
+      // console.error("Maintenance check skipped due to fetch error");
     }
   }
 

@@ -2,21 +2,22 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 export interface CartItem {
-  id: number;
+  id: number | string;
   name: string;
   slug: string;
   price: number;
   quantity: number;
   image?: string;
   category?: string;
+  variantId?: number;
 }
 
 interface CartStore {
   items: CartItem[];
   isOpen: boolean;
   addItem: (item: CartItem) => void;
-  removeItem: (id: number) => void;
-  updateQuantity: (id: number, quantity: number) => void;
+  removeItem: (id: number | string) => void;
+  updateQuantity: (id: number | string, quantity: number) => void;
   toggleCart: () => void;
   clearCart: () => void;
   getTotal: () => number;
