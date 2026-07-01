@@ -88,8 +88,8 @@ export default async function Home() {
               <Link href="/catalogo?cat=garden-audio" className={styles.catCard}>
                 <div className={styles.catLabel}><small>Per l'outdoor</small><h3>Garden Audio</h3></div>
               </Link>
-              <Link href="/catalogo?cat=home-hifi" className={styles.catCard}>
-                <div className={styles.catLabel}><small>Home Hi-Fi</small><h3>Radice</h3></div>
+              <Link href="/catalogo?cat=garden-audio" className={styles.catCard}>
+                <div className={styles.catLabel}><small>Naturalezza</small><h3>Radice</h3></div>
               </Link>
               <Link href="/catalogo?cat=home-hifi" className={styles.catCard}>
                 <div className={styles.catLabel}><small>Home Hi-Fi</small><h3>OUD</h3></div>

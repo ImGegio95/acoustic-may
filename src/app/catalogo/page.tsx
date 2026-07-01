@@ -58,17 +58,68 @@ export default async function CatalogPage({
     badge: p.badge
   }));
 
+  const categoryContent: Record<string, { title: string; subtitle: string; description: React.ReactNode }> = {
+    "studio-monitor": {
+      title: "Studio Monitor",
+      subtitle: "Precisione sonora per il tuo studio",
+      description: (
+        <p>Le nostre Bontone sono progettate per essere monitor Mono Via (Full-range) di riferimento. Cabinet in legno realizzato totalmente a mano e un'immagine sonora definita per chi non scende a compromessi sulla fedeltà.</p>
+      )
+    },
+    "garden-audio": {
+      title: "Garden Audio",
+      subtitle: "L'armonia del suono nel tuo spazio verde",
+      description: (
+        <div className={styles.richContent}>
+          <p>La linea Garden nasce per soddisfare i clienti più esigenti, garantendo prestazioni d’ascolto coinvolgenti anche all’aperto. Abbiamo posto particolare attenzione nella scelta dei materiali per assicurare un ascolto nitido e longevo in tutte le condizioni.</p>
+          <p><strong>Radice:</strong> Il diffusore da esterno che si integra perfettamente nel paesaggio, portando l'alta fedeltà tra gli alberi e i fiori del tuo giardino.</p>
+        </div>
+      )
+    },
+    "home-hifi": {
+      title: "Home Hi-Fi",
+      subtitle: "L'eccellenza artigianale nel cuore della tua casa",
+      description: (
+        <div className={styles.richContent}>
+          <p><strong>OUD:</strong> Il punto di forza dei nostri prodotti è la qualità costruttiva artigianale. OUD rappresenta l'apice della nostra ricerca sonora per l'ambiente domestico, combinando legni pregiati e componenti d'eccellenza.</p>
+        </div>
+      )
+    }
+  };
+
+  const currentCat = params.cat ? categoryContent[params.cat] : null;
+
   return (
     <>
       <Header />
       <main className="container">
         <div className={styles.breadcrumb}>
-          <Link href="/">Home</Link> / Catalogo
+          <Link href="/">Home</Link> / {params.cat ? categories.find(c => c.slug === params.cat)?.name : 'Catalogo'}
         </div>
-        <div className={styles.catHeader}>
-          <h1>Catalogo</h1>
-          <p>Esplora la nostra collezione di diffusori artigianali.</p>
-        </div>
+
+        {currentCat ? (
+          <div className={styles.catHero}>
+            <div className={styles.heroContent}>
+              <span className={styles.catBadge}>Linea {currentCat.title}</span>
+              <h1>{currentCat.title}</h1>
+              <h3>{currentCat.subtitle}</h3>
+              <div className={styles.heroDesc}>
+                {currentCat.description}
+              </div>
+            </div>
+            <div className={styles.heroImagePlaceholder}>
+              {/* Placeholder for category hero image */}
+              <div className={styles.glassCard}>
+                <span>Acoustic May Experience</span>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className={styles.catHeader}>
+            <h1>{params.q ? `Ricerca: ${params.q}` : 'Catalogo'}</h1>
+            <p>Esplora la nostra collezione di diffusori artigianali.</p>
+          </div>
+        )}
         
         <div className={styles.catLayout}>
           <aside className={styles.filters}>
